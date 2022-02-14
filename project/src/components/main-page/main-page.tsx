@@ -1,10 +1,9 @@
+
 import PlaceCard from '../place-card/place-card';
+import LocationTabItem from '../location-tab-item/location-tab-item';
+import {MainPageProps} from '../../types/main-page-props';
 
-type MainPageProps = {
-  placeOffersCount: number;
-};
-
-function MainPage({ placeOffersCount }: MainPageProps): JSX.Element {
+function MainPage({ placeOffersCount, cities }: MainPageProps): JSX.Element {
   return (
     <>
       <div style={{ display: 'none' }}>
@@ -75,36 +74,9 @@ function MainPage({ placeOffersCount }: MainPageProps): JSX.Element {
           <div className="tabs">
             <section className="locations container">
               <ul className="locations__list tabs__list">
-                <li className="locations__item">
-                  <a className="locations__item-link tabs__item" href="#">
-                    <span>Paris</span>
-                  </a>
-                </li>
-                <li className="locations__item">
-                  <a className="locations__item-link tabs__item" href="#">
-                    <span>Cologne</span>
-                  </a>
-                </li>
-                <li className="locations__item">
-                  <a className="locations__item-link tabs__item" href="#">
-                    <span>Brussels</span>
-                  </a>
-                </li>
-                <li className="locations__item">
-                  <a className="locations__item-link tabs__item tabs__item--active">
-                    <span>Amsterdam</span>
-                  </a>
-                </li>
-                <li className="locations__item">
-                  <a className="locations__item-link tabs__item" href="#">
-                    <span>Hamburg</span>
-                  </a>
-                </li>
-                <li className="locations__item">
-                  <a className="locations__item-link tabs__item" href="#">
-                    <span>Dusseldorf</span>
-                  </a>
-                </li>
+                {cities.map((item) => (
+                  <LocationTabItem city={item} key={Math.random()} />
+                ))}
               </ul>
             </section>
           </div>
@@ -140,11 +112,9 @@ function MainPage({ placeOffersCount }: MainPageProps): JSX.Element {
                   </ul>
                 </form>
                 <div className="cities__places-list places__list tabs__content">
-                  <PlaceCard />
-                  <PlaceCard />
-                  <PlaceCard />
-                  <PlaceCard />
-                  <PlaceCard />
+                  {[...Array(placeOffersCount)].map(() => (
+                    <PlaceCard key={Math.random()} />
+                  ))}
                 </div>
               </section>
               <div className="cities__right-section">
