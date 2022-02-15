@@ -2,9 +2,11 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './components/app/app';
 
+const city = ['Paris', 'Cologne', 'Brussels', 'Amsterdam', 'Hamburg', 'Dusseldorf'] as const;
+
 const Settings = {
   PLACE_OFFERS_COUNT: 5,
-  CITIES: ['Paris', 'Cologne', 'Brussels', 'Amsterdam', 'Hamburg'],
+  CITIES: city,
 };
 
 ReactDOM.render(

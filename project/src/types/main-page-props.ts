@@ -1,4 +1,4 @@
 export type MainPageProps = {
   placeOffersCount: number;
-  cities: string[];
+  cities: readonly['Paris', 'Cologne', 'Brussels', 'Amsterdam', 'Hamburg', 'Dusseldorf'];
 };
