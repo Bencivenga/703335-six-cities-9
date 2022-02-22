@@ -1,6 +1,6 @@
 import Logo from '../../components/logo/logo';
 import HeaderAuth from '../../components/header-auth/header-auth';
-import {AuthorizationStatus} from '../../const';
+import {AppRoute, AuthorizationStatus} from '../../const';
 import {Link} from 'react-router-dom';
 
 function NotFound(): JSX.Element {
@@ -48,7 +48,7 @@ function NotFound(): JSX.Element {
       <main className="page page--gray">
         <div className="container">
           <h1>404. Page not found</h1>
-          <Link to="/">to main page</Link>
+          <Link to={AppRoute.Main}>to main page</Link>
         </div>
       </main>
     </>
