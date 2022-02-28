@@ -1,26 +1,34 @@
 import {Link} from 'react-router-dom';
+import {useState} from 'react';
+import {Offer} from '../../types/offers';
 
-function PlaceCard() {
+type PlaceCardPoprs = {
+  offer: Offer;
+};
+
+function PlaceCard({offer}: PlaceCardPoprs) {
+  const {previewImage, price, title, type, id, isPremium} = offer;
+  const getCardStatusMark = () => isPremium ? <div className="place-card__mark"><span>Premium</span></div> :'';
+  const [activeCardId, setActiveCardId] = useState(id);
+
   return (
-    <article className="cities__place-card place-card">
-      <div className="place-card__mark">
-        <span>Premium</span>
-      </div>
+    <article className="cities__place-card place-card" onMouseOver={() => {setActiveCardId(id);}}>
+      {getCardStatusMark()}
       <div className="cities__image-wrapper place-card__image-wrapper">
-        <Link to="#">
+        <Link to={`/offer/${activeCardId}`}>
           <img
             className="place-card__image"
-            src="img/apartment-01.jpg"
+            src={previewImage}
             width="260"
             height="200"
-            alt="Place image"
+            alt="Place"
           />
         </Link>
       </div>
       <div className="place-card__info">
         <div className="place-card__price-wrapper">
           <div className="place-card__price">
-            <b className="place-card__price-value">&euro;120</b>
+            <b className="place-card__price-value">&euro;{price}</b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
           <button className="place-card__bookmark-button button" type="button">
@@ -37,9 +45,9 @@ function PlaceCard() {
           </div>
         </div>
         <h2 className="place-card__name">
-          <Link to="#">Beautiful &amp; luxurious apartment at great location</Link>
+          <Link to="#">{title}</Link>
         </h2>
-        <p className="place-card__type">Apartment</p>
+        <p className="place-card__type">{type}</p>
       </div>
     </article>
   );

@@ -13,3 +13,7 @@ export enum AuthorizationStatus {
   Unknown = 'UNKNOWN',
 }
 
+export const MAX_OFFER_IMAGES= 6;
+
+const MAX_RATING = 5;
+export const getRatingPerc = (rating: number): number => Math.round(rating) / MAX_RATING * 100;

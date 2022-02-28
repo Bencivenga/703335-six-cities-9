@@ -2,8 +2,10 @@
 import User from '../user/user';
 import Guest from '../guest/guest';
 import {AuthorizationStatus} from '../../const';
-import {HeaderAuthProps} from '../../types/header-auth-props';
 
+type HeaderAuthProps = {
+  authorizationStatus: AuthorizationStatus;
+};
 
 function HeaderAuth({authorizationStatus}: HeaderAuthProps ): JSX.Element {
   if (authorizationStatus === AuthorizationStatus.Auth) {
