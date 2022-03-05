@@ -1,6 +1,7 @@
 import {Link} from 'react-router-dom';
 import {useState} from 'react';
 import {Offer} from '../../types/offers';
+import {AppRoute} from '../../const';
 
 type PlaceCardPoprs = {
   offer: Offer;
@@ -8,14 +9,13 @@ type PlaceCardPoprs = {
 
 function PlaceCard({offer}: PlaceCardPoprs) {
   const {previewImage, price, title, type, id, isPremium} = offer;
-  const getCardStatusMark = () => isPremium ? <div className="place-card__mark"><span>Premium</span></div> :'';
   const [activeCardId, setActiveCardId] = useState(id);
 
   return (
     <article className="cities__place-card place-card" onMouseOver={() => {setActiveCardId(id);}}>
-      {getCardStatusMark()}
+      {isPremium && <div className="place-card__mark"><span>Premium</span></div>}
       <div className="cities__image-wrapper place-card__image-wrapper">
-        <Link to={`/offer/${activeCardId}`}>
+        <Link to={`${AppRoute.Room}/${activeCardId}`}>
           <img
             className="place-card__image"
             src={previewImage}

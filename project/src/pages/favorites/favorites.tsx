@@ -1,66 +1,16 @@
 import Logo from '../../components/logo/logo';
 import HeaderAuth from '../../components/header-auth/header-auth';
-import FavoriteLocationsItems from '../../components/favorite-locations-items/favorite-locations-items';
-import {AuthorizationStatus} from '../../const';
-import {Offers, Offer} from '../../types/offers';
+import {AuthorizationStatus, AppRoute} from '../../const';
+import {Offers} from '../../types/offers';
+import FavoritesList from '../../components/favorites-list/favorites-list';
+import {Link} from 'react-router-dom';
 
 type FavoriteProps = {
   offers: Offers;
 }
 
-type SameCityOffers = {
-  [key: string]: Offer[];
-}
 
 function Favorites({offers}: FavoriteProps): JSX.Element {
-  const favoriteOffers = offers.filter((offer) => offer.isFavorite);
-  const sameCityOffers: SameCityOffers = {};
-
-  favoriteOffers.forEach((offer) => {
-    const city = offer.city.name;
-
-    if (sameCityOffers[city] === undefined) {
-      sameCityOffers[city] = [];
-    }
-
-    sameCityOffers[city].push(offer);
-  });
-
-  const isEmpty = favoriteOffers.length ?
-    (
-      <main className="page__main page__main--favorites">
-        <div className="page__favorites-container container">
-          <section className="favorites">
-            <h1 className="favorites__title">Saved listing</h1>
-            <ul className="favorites__list">
-              {
-                Object.keys(sameCityOffers).map((city) => (
-                  <FavoriteLocationsItems
-                    city={city}
-                    offers={sameCityOffers[city]}
-                    key={city}
-                  />
-                ))
-              }
-            </ul>
-          </section>
-        </div>
-      </main>
-    ) :
-    (
-      <main className="page__main page__main--favorites page__main--favorites-empty">
-        <div className="page__favorites-container container">
-          <section className="favorites favorites--empty">
-            <h1 className="visually-hidden">Favorites (empty)</h1>
-            <div className="favorites__status-wrapper">
-              <b className="favorites__status">Nothing yet saved.</b>
-              <p className="favorites__status-description">Save properties to narrow down search or plan your future trips.</p>
-            </div>
-          </section>
-        </div>
-      </main>
-    );
-
   return (
     <div className="page">
       <header className="header">
@@ -77,9 +27,9 @@ function Favorites({offers}: FavoriteProps): JSX.Element {
           </div>
         </div>
       </header>
-      {isEmpty}
+      <FavoritesList offers={offers}/>
       <footer className="footer container">
-        <a className="footer__logo-link" href="main.html">
+        <Link className="footer__logo-link" to={AppRoute.Main}>
           <img
             className="footer__logo"
             src="img/logo.svg"
@@ -87,7 +37,7 @@ function Favorites({offers}: FavoriteProps): JSX.Element {
             width="64"
             height="33"
           />
-        </a>
+        </Link>
       </footer>
     </div>
   );

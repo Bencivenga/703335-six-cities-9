@@ -38,7 +38,7 @@ function App({placeOffersCount, cities, offers, reviews}: AppScreenProps): JSX.E
           }
         />
         <Route
-          path={AppRoute.Room}
+          path={`${AppRoute.Room}/:id`}
           element={<Room reviews={reviews} />}
         />
         <Route
