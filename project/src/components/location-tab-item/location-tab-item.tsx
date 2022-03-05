@@ -1,5 +1,8 @@
-import {LocationTabItemProps} from '../../types/location-tab-item-props';
 import {Link} from 'react-router-dom';
+
+type LocationTabItemProps = {
+  city: string;
+}
 
 function LocationTabItem({city}: LocationTabItemProps): JSX.Element {
   return (
