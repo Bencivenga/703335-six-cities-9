@@ -1,28 +1,29 @@
 import FavoriteLocationsItems from '../../components/favorite-locations-items/favorite-locations-items';
-import {Offers, Offer} from '../../types/offers';
+import {Offers} from '../../types/offers';
 
 type FavoriteProps = {
   offers: Offers;
 }
 
 type SameCityOffers = {
-  [key: string]: Offer[];
+  [key: string]: Offers;
 }
 
 
 function FavoritesList({offers}: FavoriteProps): JSX.Element {
   const favoriteOffers = offers.filter((offer) => offer.isFavorite);
-  const sameCityOffers: SameCityOffers = {};
 
-  favoriteOffers.forEach((offer) => {
+  const sameCityOffers = favoriteOffers.reduce((newObj: SameCityOffers, offer) => {
     const city = offer.city.name;
 
-    if (!sameCityOffers[city]) {
-      sameCityOffers[city] = [];
+    if (!newObj[city]) {
+      newObj[city] = [];
     }
 
-    sameCityOffers[city].push(offer);
-  });
+    newObj[city].push(offer);
+
+    return newObj;
+  }, {});
 
 
   if (favoriteOffers.length) {

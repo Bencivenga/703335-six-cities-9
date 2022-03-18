@@ -2,8 +2,10 @@ import Logo from '../../components/logo/logo';
 import HeaderAuth from '../../components/header-auth/header-auth';
 import PlacesList from '../../components/places-list/places-list';
 import LocationTabItem from '../../components/location-tab-item/location-tab-item';
+import Map from '../../components/map/map';
 import {AuthorizationStatus} from '../../const';
-import {Offers} from '../../types/offers';
+import {Offers, Offer} from '../../types/offers';
+import {useState} from 'react';
 
 type MainPageProps = {
   placeOffersCount: number;
@@ -12,6 +14,8 @@ type MainPageProps = {
 };
 
 function Main({placeOffersCount, cities, offers}: MainPageProps): JSX.Element {
+  const [selectedOffer, setSelectedOffer] = useState<Offer | null>(null);
+
   return (
     <div className="page page--gray page--main">
       <header className="header">
@@ -71,10 +75,10 @@ function Main({placeOffersCount, cities, offers}: MainPageProps): JSX.Element {
                   </li>
                 </ul>
               </form>
-              <PlacesList offers={offers}/>
+              <PlacesList offers={offers} onPlaceCardHover={setSelectedOffer}/>
             </section>
             <div className="cities__right-section">
-              <section className="cities__map map"></section>
+              <Map city={offers[0].city} offers={offers} selectedOffer={selectedOffer}/>
             </div>
           </div>
         </div>
