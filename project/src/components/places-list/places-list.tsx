@@ -1,14 +1,22 @@
 import PlaceCard from '../place-card/place-card';
-import {Offers} from '../../types/offers';
+import {Offers, Offer} from '../../types/offers';
 
 type PlacesListProps = {
   offers: Offers;
+  onPlaceCardHover(offer: Offer): void;
 }
 
-function PlacesList({offers}: PlacesListProps): JSX.Element {
+function PlacesList({offers, onPlaceCardHover}: PlacesListProps): JSX.Element {
   return(
     <div className="cities__places-list places__list tabs__content">
-      {offers.map((offer) => <PlaceCard key={offer.id} offer={offer}/>)}
+      {offers.map((offer) =>
+        (
+          <PlaceCard
+            key={offer.id}
+            offer={offer}
+            onMouseOver={onPlaceCardHover}
+          />
+        ))}
     </div>
   );
 }

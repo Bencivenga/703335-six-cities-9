@@ -40,3 +40,10 @@ export const Ratings = {
     title: 'terribly',
   },
 };
+
+export const URL_MARKER_DEFAULT = 'img/pin.svg';
+export const URL_MARKER_CURRENT = 'img/pin-active.svg';
+
+export const MARKER_WIDTH = 42;
+export const MARKER_HEIGHT = 68;
+export const HALF_WIDTH_MARKER = 0.5 * MARKER_WIDTH;
