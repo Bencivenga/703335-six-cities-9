@@ -9,6 +9,7 @@ type MapProps = {
   city: City,
   offers: Offers,
   selectedOffer: Offer | null,
+  className: string,
 };
 
 const getIcon = (selectedOffer: Offer | null, offer: Offer) => {
@@ -30,7 +31,7 @@ const getIcon = (selectedOffer: Offer | null, offer: Offer) => {
 
 const markers: Marker[] = [];
 
-function Map({city, offers, selectedOffer}: MapProps) {
+function Map({city, offers, selectedOffer, className}: MapProps) {
   const mapRef = useRef(null);
   const map = useMap(mapRef, city);
 
@@ -59,7 +60,7 @@ function Map({city, offers, selectedOffer}: MapProps) {
 
   return (
     <section
-      className="cities__map map"
+      className={className}
       ref={mapRef}
     >
     </section>

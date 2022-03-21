@@ -4,7 +4,7 @@ import PlacesList from '../../components/places-list/places-list';
 import LocationTabItem from '../../components/location-tab-item/location-tab-item';
 import Map from '../../components/map/map';
 import {AuthorizationStatus} from '../../const';
-import {Offers, Offer} from '../../types/offers';
+import {Offers, Offer, PlaceCardType} from '../../types/offers';
 import {useState} from 'react';
 
 type MainPageProps = {
@@ -75,10 +75,19 @@ function Main({placeOffersCount, cities, offers}: MainPageProps): JSX.Element {
                   </li>
                 </ul>
               </form>
-              <PlacesList offers={offers} onPlaceCardHover={setSelectedOffer}/>
+              <PlacesList
+                offers={offers}
+                onPlaceCardHover={setSelectedOffer}
+                placeCardType={PlaceCardType.MainPlaceCard}
+              />
             </section>
             <div className="cities__right-section">
-              <Map city={offers[0].city} offers={offers} selectedOffer={selectedOffer}/>
+              <Map
+                city={offers[0].city}
+                offers={offers}
+                selectedOffer={selectedOffer}
+                className="cities__map map"
+              />
             </div>
           </div>
         </div>
