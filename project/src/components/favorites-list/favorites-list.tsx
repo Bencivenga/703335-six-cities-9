@@ -1,20 +1,29 @@
 import FavoriteLocationsItems from '../../components/favorite-locations-items/favorite-locations-items';
 import {Offers} from '../../types/offers';
 
+
 type FavoriteProps = {
   offers: Offers;
+};
+
+enum City {
+  Paris = 'Paris',
+  Cologne = 'Cologne',
+  Brussels = 'Brussels',
+  Amsterdam = 'Amsterdam',
+  Hamburg = 'Hamburg',
+  Dusseldorf = 'Dusseldorf',
 }
 
 type SameCityOffers = {
-  [key: string]: Offers;
-}
-
+  [key in City]: Offers
+};
 
 function FavoritesList({offers}: FavoriteProps): JSX.Element {
   const favoriteOffers = offers.filter((offer) => offer.isFavorite);
 
   const sameCityOffers = favoriteOffers.reduce((newObj: SameCityOffers, offer) => {
-    const city = offer.city.name;
+    const city = offer.city.name as City;
 
     if (!newObj[city]) {
       newObj[city] = [];
@@ -23,7 +32,7 @@ function FavoritesList({offers}: FavoriteProps): JSX.Element {
     newObj[city].push(offer);
 
     return newObj;
-  }, {});
+  }, {} as SameCityOffers);
 
 
   if (favoriteOffers.length) {
@@ -37,7 +46,7 @@ function FavoritesList({offers}: FavoriteProps): JSX.Element {
                 Object.keys(sameCityOffers).map((city) => (
                   <FavoriteLocationsItems
                     city={city}
-                    offers={sameCityOffers[city]}
+                    offers={sameCityOffers[city as City]}
                     key={city}
                   />
                 ))

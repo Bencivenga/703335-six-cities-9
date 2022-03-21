@@ -4,16 +4,19 @@ import {AppRoute} from '../../const';
 
 type PlaceCardPoprs = {
   offer: Offer,
-  onMouseOver(offer: Offer): void
+  onMouseOver?: (offer: Offer) => void
 };
 
 function PlaceCard({offer, onMouseOver}: PlaceCardPoprs) {
   const {previewImage, price, title, type, id, isPremium} = offer;
+  const handleMouseOver = () => {
+    onMouseOver && onMouseOver(offer);
+  };
 
   return (
     <article
       className="cities__place-card place-card"
-      onMouseOver={() => {onMouseOver(offer);}}
+      onMouseOver={handleMouseOver}
     >
       {isPremium && <div className="place-card__mark"><span>Premium</span></div>}
       <div className="cities__image-wrapper place-card__image-wrapper">

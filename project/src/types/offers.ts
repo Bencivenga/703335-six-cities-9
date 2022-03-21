@@ -33,6 +33,11 @@ export type Offer = {
   rating: number;
   title: string;
   type: string;
-}
+};
 
 export type Offers = Offer[];
+
+export enum PlaceCardType {
+  MainPlaceCard,
+  NearPlaceCard
+}
