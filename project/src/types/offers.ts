@@ -1,3 +1,4 @@
+
 export type Location = {
   latitude: number;
   longitude: number;
@@ -37,7 +38,7 @@ export type Offer = {
 
 export type Offers = Offer[];
 
-export enum PlaceCardType {
-  MainPlaceCard,
-  NearPlaceCard
+export type CityOffers = {
+  city: string;
+  offers: Offers;
 }

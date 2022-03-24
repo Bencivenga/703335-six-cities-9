@@ -1,14 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {city} from './const';
+import {Provider} from 'react-redux';
 import {offers} from './mocks/offers';
 import {reviews} from './mocks/reviews';
 import App from './components/app/app';
+import {store} from './store';
 
-const Settings = {
-  PLACE_OFFERS_COUNT: offers.length,
-  CITIES: city,
-};
 
 ReactDOM.render(
   <React.StrictMode>
@@ -35,11 +32,11 @@ ReactDOM.render(
         </symbol>
       </svg>
     </div>
-    <App
-      placeOffersCount = {Settings.PLACE_OFFERS_COUNT}
-      cities = {Settings.CITIES}
-      offers = {offers}
-      reviews={reviews}
-    />
+    <Provider store={store}>
+      <App
+        offers = {offers}
+        reviews={reviews}
+      />
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root'));
