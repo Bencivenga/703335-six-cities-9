@@ -1,5 +1,5 @@
 import {BrowserRouter, Route, Routes} from 'react-router-dom';
-import {AppRoute, AuthorizationStatus, city} from '../../const';
+import {AppRoute, AuthorizationStatus} from '../../const';
 import {Offers} from '../../types/offers';
 import {Reviews} from '../../types/reviews';
 import PrivateRoute from '../private-route/private-route';
@@ -11,19 +11,17 @@ import NotFound from '../../pages/not-found/not-found';
 
 
 type AppScreenProps = {
-  placeOffersCount: number;
-  cities: typeof city;
   offers: Offers;
   reviews: Reviews;
 };
 
-function App({placeOffersCount, cities, offers, reviews}: AppScreenProps): JSX.Element {
+function App({offers, reviews}: AppScreenProps): JSX.Element {
   return (
     <BrowserRouter>
       <Routes>
         <Route
           path={AppRoute.Main}
-          element={<Main placeOffersCount={placeOffersCount} cities={cities} offers={offers} />}
+          element={<Main offers={offers} />}
         />
         <Route
           path={AppRoute.Login}

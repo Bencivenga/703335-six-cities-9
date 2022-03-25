@@ -4,10 +4,9 @@ import ReviewsForm from '../../components/reviews-form/reviews-form';
 import ReviewsList from '../../components/reviews-list/reviews-list';
 import PlacesList from '../../components/places-list/places-list';
 import Map from '../../components/map/map';
-import {AuthorizationStatus, getRatingPerc, MAX_OFFER_IMAGES} from '../../const';
+import {AuthorizationStatus, getRatingPerc, MAX_OFFER_IMAGES, PlaceCardClass} from '../../const';
 import {offers} from '../../mocks/offers';
 import {Reviews} from '../../types/reviews';
-import {PlaceCardType} from '../../types/offers';
 import {useLocation} from 'react-router-dom';
 
 type RoomProps = {
@@ -158,7 +157,7 @@ function Room({reviews}: RoomProps): JSX.Element {
             </h2>
             <PlacesList
               offers={nearOffers}
-              placeCardType={PlaceCardType.NearPlaceCard}
+              placeCardType={PlaceCardClass.NearPlaceCard}
             />
           </section>
         </div>

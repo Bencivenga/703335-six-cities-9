@@ -1,20 +1,28 @@
 import Logo from '../../components/logo/logo';
 import HeaderAuth from '../../components/header-auth/header-auth';
 import PlacesList from '../../components/places-list/places-list';
-import LocationTabItem from '../../components/location-tab-item/location-tab-item';
+import CitiesList from '../../components/cities/cities-list';
 import Map from '../../components/map/map';
-import {AuthorizationStatus} from '../../const';
-import {Offers, Offer, PlaceCardType} from '../../types/offers';
-import {useState} from 'react';
+import {AuthorizationStatus, citiesList, PlaceCardClass} from '../../const';
+import {Offers, Offer} from '../../types/offers';
+import {useState, useEffect} from 'react';
+import {useAppDispatch, useAppSelector} from '../../hooks';
+import {fillOffer} from '../../store/actions';
+
 
 type MainPageProps = {
-  placeOffersCount: number;
-  cities: readonly['Paris', 'Cologne', 'Brussels', 'Amsterdam', 'Hamburg', 'Dusseldorf'];
   offers: Offers;
 };
 
-function Main({placeOffersCount, cities, offers}: MainPageProps): JSX.Element {
+function Main({offers}: MainPageProps): JSX.Element {
   const [selectedOffer, setSelectedOffer] = useState<Offer | null>(null);
+
+  const offerState = useAppSelector((state) => state);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(fillOffer(offers.filter((offer) => offer.city.name === offerState.city)));
+  }, [offerState.city, dispatch, offers]);
 
   return (
     <div className="page page--gray page--main">
@@ -33,22 +41,19 @@ function Main({placeOffersCount, cities, offers}: MainPageProps): JSX.Element {
         </div>
       </header>
 
-      <main className="page__main page__main--index">
+      <main className={`page__main page__main--index ${!offerState.offers.length && 'page__main--index-empty'}`}>
         <h1 className="visually-hidden">Cities</h1>
         <div className="tabs">
-          <section className="locations container">
-            <ul className="locations__list tabs__list">
-              {cities.map((item) => (
-                <LocationTabItem city={item} key={Math.random()} />
-              ))}
-            </ul>
-          </section>
+          <CitiesList cities={citiesList} />
         </div>
         <div className="cities">
-          <div className="cities__places-container container">
+          <div
+            className={`cities__places-container container ${!offerState.offers.length && 'cities__places-container--empty'}`}
+          >
+            {offerState.offers.length !== 0 &&
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
-              <b className="places__found">{placeOffersCount} places to stay in Amsterdam</b>
+              <b className="places__found">{offerState.offers.length} places to stay in {offerState.city}</b>
               <form className="places__sorting" action="#" method="get">
                 <span className="places__sorting-caption">Sort by</span>
                 <span className="places__sorting-type" tabIndex={0}>
@@ -78,16 +83,24 @@ function Main({placeOffersCount, cities, offers}: MainPageProps): JSX.Element {
               <PlacesList
                 offers={offers}
                 onPlaceCardHover={setSelectedOffer}
-                placeCardType={PlaceCardType.MainPlaceCard}
+                placeCardType={PlaceCardClass.MainPlaceCard}
               />
-            </section>
+            </section>}
+            {!offerState.offers.length &&
+              <section className="cities__no-places">
+                <div className="cities__status-wrapper tabs__content">
+                  <b className="cities__status">No places to stay available</b>
+                  <p className="cities__status-description">We could not find any property available at the moment in {offerState.city}</p>
+                </div>
+              </section>}
             <div className="cities__right-section">
+              {offerState.offers.length &&
               <Map
-                city={offers[0].city}
-                offers={offers}
+                city={offerState.offers[0].city}
+                offers={offerState.offers}
                 selectedOffer={selectedOffer}
                 className="cities__map map"
-              />
+              />}
             </div>
           </div>
         </div>

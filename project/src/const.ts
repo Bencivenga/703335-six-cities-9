@@ -1,4 +1,4 @@
-export const city = ['Paris', 'Cologne', 'Brussels', 'Amsterdam', 'Hamburg', 'Dusseldorf'] as const;
+export const citiesList = ['Paris', 'Cologne', 'Brussels', 'Amsterdam', 'Hamburg', 'Dusseldorf'];
 
 export enum AppRoute {
   Main = '/',
@@ -47,3 +47,8 @@ export const URL_MARKER_CURRENT = 'img/pin-active.svg';
 export const MARKER_WIDTH = 42;
 export const MARKER_HEIGHT = 68;
 export const HALF_WIDTH_MARKER = 0.5 * MARKER_WIDTH;
+
+export const PlaceCardClass = {
+  MainPlaceCard: 'cities__places-list tabs__content',
+  NearPlaceCard: 'near-places__list',
+};
