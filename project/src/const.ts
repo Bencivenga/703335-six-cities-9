@@ -15,9 +15,6 @@ export enum AuthorizationStatus {
 
 export const MAX_OFFER_IMAGES= 6;
 
-const MAX_RATING = 5;
-export const getRatingPerc = (rating: number): number => Math.round(rating) / MAX_RATING * 100;
-
 export const Ratings = {
   PERFECT: {
     value: 5,
@@ -52,3 +49,17 @@ export const PlaceCardClass = {
   MainPlaceCard: 'cities__places-list tabs__content',
   NearPlaceCard: 'near-places__list',
 };
+
+export enum SortType {
+ Popular = 'Popular',
+ LowPriceFirst = 'Price: low to high',
+ HighPriceFirst = 'Price: high to low',
+ TopRatedFirst = 'Top rated first',
+}
+
+export const sortOptions = [
+  SortType.Popular,
+  SortType.LowPriceFirst,
+  SortType.HighPriceFirst,
+  SortType.TopRatedFirst,
+];

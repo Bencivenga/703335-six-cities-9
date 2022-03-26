@@ -1,6 +1,7 @@
 import {Link} from 'react-router-dom';
 import {Offer} from '../../types/offers';
 import {AppRoute} from '../../const';
+import {getRatingPerc} from '../../helpers';
 
 type PlaceCardPoprs = {
   offer: Offer,
@@ -8,7 +9,7 @@ type PlaceCardPoprs = {
 };
 
 function PlaceCard({offer, onMouseOver = () => void 0}: PlaceCardPoprs) {
-  const {previewImage, price, title, type, id, isPremium} = offer;
+  const {previewImage, price, title, type, id, rating, isPremium} = offer;
   const handleMouseOver = () => {
     onMouseOver(offer);
   };
@@ -45,7 +46,7 @@ function PlaceCard({offer, onMouseOver = () => void 0}: PlaceCardPoprs) {
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
-            <span style={{width: '80%'}}></span>
+            <span style={{width: `${getRatingPerc(rating)}%`}}></span>
             <span className="visually-hidden">Rating</span>
           </div>
         </div>

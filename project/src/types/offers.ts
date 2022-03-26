@@ -1,3 +1,4 @@
+import {SortType} from '../const';
 
 export type Location = {
   latitude: number;
@@ -41,4 +42,5 @@ export type Offers = Offer[];
 export type CityOffers = {
   city: string;
   offers: Offers;
+  sortType: SortType;
 }

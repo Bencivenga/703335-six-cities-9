@@ -1,5 +1,5 @@
 import {Review} from '../../types/reviews';
-import {getRatingPerc} from '../../const';
+import {getRatingPerc} from '../../helpers';
 import dayjs from 'dayjs';
 
 type ReviewsItemProps = {

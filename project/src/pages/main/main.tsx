@@ -2,12 +2,14 @@ import Logo from '../../components/logo/logo';
 import HeaderAuth from '../../components/header-auth/header-auth';
 import PlacesList from '../../components/places-list/places-list';
 import CitiesList from '../../components/cities/cities-list';
+import Sorting from '../../components/sorting/sorting';
 import Map from '../../components/map/map';
 import {AuthorizationStatus, citiesList, PlaceCardClass} from '../../const';
 import {Offers, Offer} from '../../types/offers';
 import {useState, useEffect} from 'react';
 import {useAppDispatch, useAppSelector} from '../../hooks';
 import {fillOffer} from '../../store/actions';
+import {getOffers} from '../../helpers';
 
 
 type MainPageProps = {
@@ -21,8 +23,8 @@ function Main({offers}: MainPageProps): JSX.Element {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(fillOffer(offers.filter((offer) => offer.city.name === offerState.city)));
-  }, [offerState.city, dispatch, offers]);
+    dispatch(fillOffer(getOffers(offerState.city, offers, offerState.sortType)));
+  }, [offerState.city, offers, offerState.sortType, dispatch]);
 
   return (
     <div className="page page--gray page--main">
@@ -54,34 +56,9 @@ function Main({offers}: MainPageProps): JSX.Element {
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
               <b className="places__found">{offerState.offers.length} places to stay in {offerState.city}</b>
-              <form className="places__sorting" action="#" method="get">
-                <span className="places__sorting-caption">Sort by</span>
-                <span className="places__sorting-type" tabIndex={0}>
-                    Popular
-                  <svg className="places__sorting-arrow" width="7" height="4">
-                    <use xlinkHref="#icon-arrow-select"></use>
-                  </svg>
-                </span>
-                <ul className="places__options places__options--custom places__options--opened">
-                  <li
-                    className="places__option places__option--active"
-                    tabIndex={0}
-                  >
-                      Popular
-                  </li>
-                  <li className="places__option" tabIndex={0}>
-                      Price: low to high
-                  </li>
-                  <li className="places__option" tabIndex={0}>
-                      Price: high to low
-                  </li>
-                  <li className="places__option" tabIndex={0}>
-                      Top rated first
-                  </li>
-                </ul>
-              </form>
+              <Sorting />
               <PlacesList
-                offers={offers}
+                offers={offerState.offers}
                 onPlaceCardHover={setSelectedOffer}
                 placeCardType={PlaceCardClass.MainPlaceCard}
               />
