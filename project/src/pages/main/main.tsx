@@ -8,8 +8,7 @@ import {AuthorizationStatus, citiesList, PlaceCardClass} from '../../const';
 import {useAppSelector} from '../../hooks';
 
 function Main(): JSX.Element {
-  const {activeCity, offers, hoveredOfferPin} = useAppSelector((state) => state);
-  const cityOffers = offers.filter((offer) => offer.city.name === activeCity);
+  const {activeCity, cityOffers, hoveredOfferPin} = useAppSelector((state) => state);
 
   return (
     <div className="page page--gray page--main">

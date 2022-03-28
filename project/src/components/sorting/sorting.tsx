@@ -1,26 +1,8 @@
 import {useState} from 'react';
 import {sortOptions, SortType} from '../../const';
-import {Offer, Offers} from '../../types/offers';
 import {useAppSelector, useAppDispatch} from '../../hooks';
-import {changeSortOption, fillCityOffers} from '../../store/actions';
-
-const sortOffers = (value: SortType, offers: Offers) => {
-  const offersToSort = [...offers];
-
-  switch(value) {
-    case SortType.HighPriceFirst:
-      return offersToSort.sort((a:Offer, b:Offer) => (a.price > b.price ? -1 : 1));
-
-    case SortType.LowPriceFirst:
-      return offersToSort.sort((a:Offer, b:Offer) => (a.price > b.price ? 1 : -1));
-
-    case SortType.TopRatedFirst:
-      return offersToSort.sort((a:Offer, b:Offer) => (a.rating > b.rating ? -1 : 1));
-
-    default:
-      return offersToSort.sort((a:Offer, b:Offer) => (a.id > b.id ? 1 : -1));
-  }
-};
+import {changeSortOption, getCityOffers} from '../../store/actions';
+import {sortOffers} from '../../utils';
 
 
 function Sorting() {
@@ -31,7 +13,7 @@ function Sorting() {
   const handleOptionClick = (option: SortType) => {
     setIsOpen(!isOpen);
     dispatch(changeSortOption(option));
-    dispatch(fillCityOffers(sortOffers(option, offers)));
+    dispatch(getCityOffers(sortOffers(option, offers)));
   };
 
   return(
