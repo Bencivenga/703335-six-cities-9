@@ -1,23 +1,31 @@
 import {Link} from 'react-router-dom';
 import {Offer} from '../../types/offers';
 import {AppRoute} from '../../const';
-import {getRatingPerc} from '../../helpers';
+import {getRatingPerc} from '../../utils';
+import {useAppDispatch} from '../../hooks';
+import {setHoveredOfferPin} from '../../store/actions';
 
-type PlaceCardPoprs = {
+type PlaceCardProps = {
   offer: Offer,
-  onMouseOver?: (offer: Offer) => void,
 };
 
-function PlaceCard({offer, onMouseOver = () => void 0}: PlaceCardPoprs) {
+function PlaceCard({offer}: PlaceCardProps) {
   const {previewImage, price, title, type, id, rating, isPremium} = offer;
+  const dispatch = useAppDispatch();
+
   const handleMouseOver = () => {
-    onMouseOver(offer);
+    dispatch(setHoveredOfferPin(offer));
+  };
+
+  const handleMouseLeave = () => {
+    dispatch(setHoveredOfferPin(null));
   };
 
   return (
     <article
       className="cities__place-card place-card"
       onMouseOver={handleMouseOver}
+      onMouseLeave={handleMouseLeave}
     >
       {isPremium && <div className="place-card__mark"><span>Premium</span></div>}
       <div className="cities__image-wrapper place-card__image-wrapper">

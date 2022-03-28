@@ -1,62 +1,64 @@
-import {Icon, Marker} from 'leaflet';
+import leaflet, {LayerGroup, Map as LeafletMap} from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import {useRef, useEffect} from 'react';
 import {URL_MARKER_DEFAULT, URL_MARKER_CURRENT, MARKER_WIDTH, MARKER_HEIGHT, HALF_WIDTH_MARKER} from '../../const';
 import useMap from '../../hooks/use-map';
-import {City, Offer, Offers} from '../../types/offers';
+import {Offer, Offers} from '../../types/offers';
 
 type MapProps = {
-  city: City,
   offers: Offers,
   selectedOffer: Offer | null,
   className: string,
 };
 
-const getIcon = (selectedOffer: Offer | null, offer: Offer) => {
+const customDefaultIcon = leaflet.icon({
+  iconUrl: URL_MARKER_DEFAULT,
+  iconSize: [MARKER_WIDTH, MARKER_HEIGHT],
+  iconAnchor: [HALF_WIDTH_MARKER, MARKER_HEIGHT],
+});
 
-  if (selectedOffer !== null && selectedOffer.id === offer.id) {
-    return new Icon({
-      iconUrl: URL_MARKER_CURRENT,
-      iconSize: [MARKER_WIDTH, MARKER_HEIGHT],
-      iconAnchor: [HALF_WIDTH_MARKER, MARKER_HEIGHT],
-    });
-  }
+const customActiveIcon = leaflet.icon({
+  iconUrl: URL_MARKER_CURRENT,
+  iconSize: [MARKER_WIDTH, MARKER_HEIGHT],
+  iconAnchor: [HALF_WIDTH_MARKER, MARKER_HEIGHT],
+});
 
-  return new Icon({
-    iconUrl: URL_MARKER_DEFAULT,
-    iconSize: [MARKER_WIDTH, MARKER_HEIGHT],
-    iconAnchor: [HALF_WIDTH_MARKER, MARKER_HEIGHT],
-  });
-};
-
-const markers: Marker[] = [];
-
-function Map({city, offers, selectedOffer, className}: MapProps) {
+function Map({offers, selectedOffer, className}: MapProps) {
   const mapRef = useRef(null);
+  const city = offers?.[0]?.city;
   const map = useMap(mapRef, city);
 
   useEffect(() => {
+    let layerGroup: LayerGroup;
     if (map) {
-      offers.forEach((offer) => {
-        const marker = new Marker({
-          lat: offer.location.latitude,
-          lng: offer.location.longitude,
+      const markers = offers.map((offer) => leaflet.marker({
+        lat: offer.location.latitude,
+        lng: offer.location.longitude,
+      }, {
+        icon: customDefaultIcon,
+      }));
+
+      if (selectedOffer) {
+        const activeMarker = leaflet.marker({
+          lat: selectedOffer.location.latitude,
+          lng: selectedOffer.location.longitude,
+        }, {
+          icon: customActiveIcon,
         });
 
-        const icon = getIcon(selectedOffer, offer);
+        markers.push(activeMarker);
+      }
 
-        marker
-          .setIcon(icon)
-          .addTo(map);
-        markers.push(marker);
-      });
+      layerGroup = leaflet.layerGroup(markers);
+      layerGroup.addTo(map);
     }
 
     return () => {
-      markers.forEach((marker) => marker.remove());
-      markers.length = 0;
+      if (map) {
+        (map as LeafletMap).removeLayer(layerGroup);
+      }
     };
-  }, [map, offers, selectedOffer]);
+  });
 
   return (
     <section
