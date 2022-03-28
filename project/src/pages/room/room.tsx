@@ -4,7 +4,8 @@ import ReviewsForm from '../../components/reviews-form/reviews-form';
 import ReviewsList from '../../components/reviews-list/reviews-list';
 import PlacesList from '../../components/places-list/places-list';
 import Map from '../../components/map/map';
-import {AuthorizationStatus, getRatingPerc, MAX_OFFER_IMAGES, PlaceCardClass} from '../../const';
+import {AuthorizationStatus, MAX_OFFER_IMAGES, PlaceCardClass} from '../../const';
+import {getRatingPerc} from '../../utils';
 import {offers} from '../../mocks/offers';
 import {Reviews} from '../../types/reviews';
 import {useLocation} from 'react-router-dom';
@@ -145,7 +146,6 @@ function Room({reviews}: RoomProps): JSX.Element {
           </div>
           <Map
             className="property__map map"
-            city={currentOffer.city}
             offers={nearOffers}
             selectedOffer={null}
           />

@@ -9,7 +9,7 @@ type CityProps = {
 };
 
 function CitiesList({cities}: CityProps) {
-  const selectedCity = useAppSelector((state) => state.city);
+  const selectedCity = useAppSelector((state) => state.activeCity);
   const dispatch = useAppDispatch();
 
   return (
