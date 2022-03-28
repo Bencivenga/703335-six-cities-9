@@ -69,7 +69,7 @@ export const offers: Offers = [
       isPro: true,
       name: 'Angelina',
     },
-    id: 29,
+    id: 19,
     images: [
       'https://9.react.pages.academy/static/hotel/13.jpg',
       'https://9.react.pages.academy/static/hotel/19.jpg',
@@ -116,7 +116,7 @@ export const offers: Offers = [
       isPro: true,
       name: 'Angelina',
     },
-    id: 16,
+    id: 20,
     images: [
       'https://9.react.pages.academy/static/hotel/11.jpg',
       'https://9.react.pages.academy/static/hotel/12.jpg',
@@ -160,7 +160,7 @@ export const offers: Offers = [
       isPro: true,
       name: 'Angelina',
     },
-    id: 18,
+    id: 29,
     images: [
       'https://9.react.pages.academy/static/hotel/3.jpg',
       'https://9.react.pages.academy/static/hotel/6.jpg',

@@ -1,8 +1,26 @@
 import {useState} from 'react';
 import {sortOptions, SortType} from '../../const';
-import {Offer} from '../../types/offers';
+import {Offer, Offers} from '../../types/offers';
 import {useAppSelector, useAppDispatch} from '../../hooks';
 import {changeSortOption, fillCityOffers} from '../../store/actions';
+
+const sortOffers = (value: SortType, offers: Offers) => {
+  const offersToSort = [...offers];
+
+  switch(value) {
+    case SortType.HighPriceFirst:
+      return offersToSort.sort((a:Offer, b:Offer) => (a.price > b.price ? -1 : 1));
+
+    case SortType.LowPriceFirst:
+      return offersToSort.sort((a:Offer, b:Offer) => (a.price > b.price ? 1 : -1));
+
+    case SortType.TopRatedFirst:
+      return offersToSort.sort((a:Offer, b:Offer) => (a.rating > b.rating ? -1 : 1));
+
+    default:
+      return offersToSort.sort((a:Offer, b:Offer) => (a.id > b.id ? 1 : -1));
+  }
+};
 
 
 function Sorting() {
@@ -10,36 +28,10 @@ function Sorting() {
   const [isOpen, setIsOpen] = useState(false);
   const dispatch = useAppDispatch();
 
-  const sortOffers = (value: string) => {
-    const offersToSort = [...offers];
-
-    switch(value) {
-      case SortType.Popular:
-        return offersToSort;
-
-      case SortType.HighPriceFirst:
-        offersToSort.sort((a:Offer, b:Offer) => (a.price > b.price ? -1 : 1));
-        break;
-
-      case SortType.LowPriceFirst:
-        offersToSort.sort((a:Offer, b:Offer) => (a.price > b.price ? 1 : -1));
-        break;
-
-      case SortType.TopRatedFirst:
-        offersToSort.sort((a:Offer, b:Offer) => (a.rating > b.rating ? -1 : 1));
-        break;
-
-      default:
-        return offersToSort;
-    }
-
-    dispatch(fillCityOffers(offersToSort));
-  };
-
   const handleOptionClick = (option: SortType) => {
     setIsOpen(!isOpen);
     dispatch(changeSortOption(option));
-    sortOffers(option);
+    dispatch(fillCityOffers(sortOffers(option, offers)));
   };
 
   return(
