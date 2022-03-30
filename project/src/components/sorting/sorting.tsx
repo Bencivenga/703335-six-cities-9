@@ -1,7 +1,7 @@
 import {useState} from 'react';
 import {sortOptions, SortType} from '../../const';
 import {useAppSelector, useAppDispatch} from '../../hooks';
-import {changeSortOption, getCityOffers} from '../../store/actions';
+import {changeSortOptionAction, getCityOffersAction} from '../../store/actions';
 import {sortOffers} from '../../utils';
 
 
@@ -12,8 +12,8 @@ function Sorting() {
 
   const handleOptionClick = (option: SortType) => {
     setIsOpen(!isOpen);
-    dispatch(changeSortOption(option));
-    dispatch(getCityOffers(sortOffers(option, offers)));
+    dispatch(changeSortOptionAction(option));
+    dispatch(getCityOffersAction(sortOffers(option, offers)));
   };
 
   return(

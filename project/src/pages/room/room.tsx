@@ -6,15 +6,16 @@ import PlacesList from '../../components/places-list/places-list';
 import Map from '../../components/map/map';
 import {AuthorizationStatus, MAX_OFFER_IMAGES, PlaceCardClass} from '../../const';
 import {getRatingPerc} from '../../utils';
-import {offers} from '../../mocks/offers';
 import {Reviews} from '../../types/reviews';
+import {Offers} from '../../types/offers';
 import {useLocation} from 'react-router-dom';
 
 type RoomProps = {
   reviews: Reviews;
+  offers: Offers;
 }
 
-function Room({reviews}: RoomProps): JSX.Element {
+function Room({reviews, offers}: RoomProps): JSX.Element {
   const location = useLocation();
   const pathSplit= location.pathname.split('/');
   const offerId = Number(pathSplit[pathSplit.length - 1]);
