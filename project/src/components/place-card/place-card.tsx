@@ -3,7 +3,7 @@ import {Offer} from '../../types/offers';
 import {AppRoute} from '../../const';
 import {getRatingPerc} from '../../utils';
 import {useAppDispatch} from '../../hooks';
-import {setHoveredOfferPin} from '../../store/actions';
+import {setHoveredOfferPinAction} from '../../store/actions';
 
 type PlaceCardProps = {
   offer: Offer,
@@ -14,11 +14,11 @@ function PlaceCard({offer}: PlaceCardProps) {
   const dispatch = useAppDispatch();
 
   const handleMouseOver = () => {
-    dispatch(setHoveredOfferPin(offer));
+    dispatch(setHoveredOfferPinAction(offer));
   };
 
   const handleMouseLeave = () => {
-    dispatch(setHoveredOfferPin(null));
+    dispatch(setHoveredOfferPinAction(null));
   };
 
   return (

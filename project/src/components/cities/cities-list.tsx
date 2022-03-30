@@ -1,5 +1,5 @@
 import {useAppDispatch, useAppSelector} from '../../hooks';
-import {changeCity} from '../../store/actions';
+import {changeCityAction} from '../../store/actions';
 import {MouseEvent} from 'react';
 import {Link} from 'react-router-dom';
 import {citiesList} from '../../const';
@@ -26,7 +26,7 @@ function CitiesList({cities}: CityProps) {
                 onClick={
                   (evt: MouseEvent) => {
                     evt.preventDefault();
-                    dispatch(changeCity(city));
+                    dispatch(changeCityAction(city));
                   }
                 }
                 to="#"

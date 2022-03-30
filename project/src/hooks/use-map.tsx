@@ -25,6 +25,10 @@ function useMap(mapRef: MutableRefObject<HTMLElement | null>, city?: City): Map 
       instance.addLayer(layer);
       setMap(instance);
     }
+
+    if (map !== null && city?.location) {
+      map.panTo([city.location.latitude, city.location.longitude]);
+    }
   }, [mapRef, map, city]);
 
   return map;

@@ -7,6 +7,10 @@ export enum AppRoute {
   Room = '/offer',
 }
 
+export enum APIRoutes {
+  Offers = '/hotels',
+}
+
 export enum AuthorizationStatus {
   Auth = 'AUTH',
   NoAuth = 'NO_AUTH',
@@ -63,3 +67,4 @@ export const sortOptions = [
   SortType.HighPriceFirst,
   SortType.TopRatedFirst,
 ];
+

@@ -1,6 +1,7 @@
 import {BrowserRouter, Route, Routes} from 'react-router-dom';
+import {useAppSelector} from '../../hooks';
+import Spinner from '../spinner/spinner';
 import {AppRoute, AuthorizationStatus} from '../../const';
-import {Offers} from '../../types/offers';
 import {Reviews} from '../../types/reviews';
 import PrivateRoute from '../private-route/private-route';
 import Favorites from '../../pages/favorites/favorites';
@@ -8,14 +9,24 @@ import Login from '../../pages/login/login';
 import Main from '../../pages/main/main';
 import Room from '../../pages/room/room';
 import NotFound from '../../pages/not-found/not-found';
+import {store} from '../../store';
+import {fetchOffersAction} from '../../store/api-actions';
 
 
 type AppScreenProps = {
-  offers: Offers;
   reviews: Reviews;
 };
 
-function App({offers, reviews}: AppScreenProps): JSX.Element {
+store.dispatch(fetchOffersAction());
+
+function App({reviews}: AppScreenProps): JSX.Element {
+
+  const {isDataLoaded, offers} = useAppSelector((state) => state);
+
+  if (!isDataLoaded) {
+    return <Spinner />;
+  }
+
   return (
     <BrowserRouter>
       <Routes>
@@ -37,7 +48,7 @@ function App({offers, reviews}: AppScreenProps): JSX.Element {
         />
         <Route
           path={`${AppRoute.Room}/:id`}
-          element={<Room reviews={reviews} />}
+          element={<Room reviews={reviews} offers={offers} />}
         />
         <Route
           path="*"
