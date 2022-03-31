@@ -1,7 +1,7 @@
-import {BrowserRouter, Route, Routes} from 'react-router-dom';
+import {Route, Routes} from 'react-router-dom';
 import {useAppSelector} from '../../hooks';
 import Spinner from '../spinner/spinner';
-import {AppRoute, AuthorizationStatus} from '../../const';
+import {AppRoute} from '../../const';
 import {Reviews} from '../../types/reviews';
 import PrivateRoute from '../private-route/private-route';
 import Favorites from '../../pages/favorites/favorites';
@@ -9,26 +9,25 @@ import Login from '../../pages/login/login';
 import Main from '../../pages/main/main';
 import Room from '../../pages/room/room';
 import NotFound from '../../pages/not-found/not-found';
-import {store} from '../../store';
-import {fetchOffersAction} from '../../store/api-actions';
+import HistoryRouter from '../history-route/history-route';
+import browserHistory from '../../browser-history';
+import {isCheckedAuth} from '../../utils';
 
 
 type AppScreenProps = {
   reviews: Reviews;
 };
 
-store.dispatch(fetchOffersAction());
-
 function App({reviews}: AppScreenProps): JSX.Element {
 
-  const {isDataLoaded, offers} = useAppSelector((state) => state);
+  const {isDataLoaded, offers, authorizationStatus} = useAppSelector((state) => state);
 
-  if (!isDataLoaded) {
+  if (isCheckedAuth(authorizationStatus) || !isDataLoaded) {
     return <Spinner />;
   }
 
   return (
-    <BrowserRouter>
+    <HistoryRouter history={browserHistory}>
       <Routes>
         <Route
           path={AppRoute.Main}
@@ -41,7 +40,7 @@ function App({reviews}: AppScreenProps): JSX.Element {
         <Route
           path={AppRoute.Favorites}
           element={
-            <PrivateRoute authorizationStatus={AuthorizationStatus.Auth}>
+            <PrivateRoute authorizationStatus={authorizationStatus}>
               <Favorites offers={offers} />
             </PrivateRoute>
           }
@@ -55,7 +54,7 @@ function App({reviews}: AppScreenProps): JSX.Element {
           element={<NotFound />}
         />
       </Routes>
-    </BrowserRouter>
+    </HistoryRouter>
   );
 }
 

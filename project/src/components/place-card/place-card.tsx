@@ -2,23 +2,22 @@ import {Link} from 'react-router-dom';
 import {Offer} from '../../types/offers';
 import {AppRoute} from '../../const';
 import {getRatingPerc} from '../../utils';
-import {useAppDispatch} from '../../hooks';
-import {setHoveredOfferPinAction} from '../../store/actions';
 
 type PlaceCardProps = {
   offer: Offer,
+  onMouseOver?: (offer: Offer) => void,
+  onMouseLeave?: () => void,
 };
 
-function PlaceCard({offer}: PlaceCardProps) {
+function PlaceCard({offer, onMouseOver = () => void 0, onMouseLeave = () => void 0}: PlaceCardProps) {
   const {previewImage, price, title, type, id, rating, isPremium} = offer;
-  const dispatch = useAppDispatch();
 
   const handleMouseOver = () => {
-    dispatch(setHoveredOfferPinAction(offer));
+    onMouseOver(offer);
   };
 
   const handleMouseLeave = () => {
-    dispatch(setHoveredOfferPinAction(null));
+    onMouseLeave();
   };
 
   return (
