@@ -1,7 +1,7 @@
 import {createReducer} from '@reduxjs/toolkit';
-import {changeCityAction, getCityOffersAction, changeSortOptionAction, setHoveredOfferPinAction, loadOffersAction} from './actions';
-import {SortType, citiesList} from '../const';
-import {Offers, Offer} from '../types/offers';
+import {changeCityAction, getCityOffersAction, changeSortOptionAction, loadOffersAction, requireAuthorizationAction} from './actions';
+import {SortType, citiesList, AuthorizationStatus} from '../const';
+import {Offers} from '../types/offers';
 
 const FIRST_CITY = citiesList[0];
 
@@ -10,8 +10,8 @@ type InitialState = {
   offers: Offers;
   cityOffers: Offers;
   sortType: SortType;
-  hoveredOfferPin: null | Offer;
   isDataLoaded: boolean;
+  authorizationStatus: AuthorizationStatus;
 }
 
 const initialState: InitialState = {
@@ -19,8 +19,8 @@ const initialState: InitialState = {
   offers: [],
   cityOffers: [],
   sortType: SortType.Popular,
-  hoveredOfferPin: null,
   isDataLoaded: false,
+  authorizationStatus: AuthorizationStatus.Unknown,
 };
 
 export const reducer = createReducer(initialState, (builder) => {
@@ -41,7 +41,7 @@ export const reducer = createReducer(initialState, (builder) => {
     .addCase(changeSortOptionAction, (state, action) => {
       state.sortType = action.payload;
     })
-    .addCase(setHoveredOfferPinAction, (state, action) => {
-      state.hoveredOfferPin = action.payload;
+    .addCase(requireAuthorizationAction, (state, action) => {
+      state.authorizationStatus = action.payload;
     });
 });

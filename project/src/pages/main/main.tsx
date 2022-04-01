@@ -4,11 +4,15 @@ import PlacesList from '../../components/places-list/places-list';
 import CitiesList from '../../components/cities/cities-list';
 import Sorting from '../../components/sorting/sorting';
 import Map from '../../components/map/map';
-import {AuthorizationStatus, citiesList, PlaceCardClass} from '../../const';
+import {citiesList, PlaceCardClass} from '../../const';
 import {useAppSelector} from '../../hooks';
+import {Offer} from '../../types/offers';
+import {useState} from 'react';
 
 function Main(): JSX.Element {
-  const {activeCity, cityOffers, hoveredOfferPin} = useAppSelector((state) => state);
+  const {activeCity, cityOffers, authorizationStatus} = useAppSelector((state) => state);
+  const [selectedOffer, setSelectedOffer] = useState<Offer | null>(null);
+
 
   return (
     <div className="page page--gray page--main">
@@ -20,7 +24,7 @@ function Main(): JSX.Element {
             </div>
             <nav className="header__nav">
               <ul className="header__nav-list">
-                <HeaderAuth authorizationStatus={AuthorizationStatus.NoAuth} />
+                <HeaderAuth authorizationStatus={authorizationStatus} />
               </ul>
             </nav>
           </div>
@@ -44,6 +48,8 @@ function Main(): JSX.Element {
               <PlacesList
                 offers={cityOffers}
                 placeCardType={PlaceCardClass.MainPlaceCard}
+                onPlaceCardHover={setSelectedOffer}
+                onPlaceCardLeave={() => setSelectedOffer(null)}
               />
             </section>}
             {!cityOffers.length &&
@@ -57,7 +63,7 @@ function Main(): JSX.Element {
               {cityOffers.length &&
               <Map
                 offers={cityOffers}
-                selectedOffer={hoveredOfferPin}
+                selectedOffer={selectedOffer}
                 className="cities__map map"
               />}
             </div>
