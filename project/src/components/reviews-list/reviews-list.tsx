@@ -1,11 +1,9 @@
 import ReviewsItem from '../reviews-item/reviews-item';
-import {Reviews} from '../../types/reviews';
+import {useAppSelector} from '../../hooks';
 
-type ReviewsProps = {
-  reviews: Reviews;
-};
+function ReviewsList(): JSX.Element {
+  const {reviews} = useAppSelector((state) => state);
 
-function ReviewsList({reviews}: ReviewsProps): JSX.Element {
   return (
     <>
       {reviews.length > 0 &&

@@ -11,6 +11,8 @@ export enum APIRoutes {
   Offers = '/hotels',
   Login = '/login',
   Logout = '/logout',
+  Comments = '/comments',
+  nearOffers = '/nearby',
 }
 
 export enum AuthorizationStatus {
@@ -27,28 +29,13 @@ export enum HTTP_CODE {
 
 export const MAX_OFFER_IMAGES= 6;
 
-export const Ratings = {
-  PERFECT: {
-    value: 5,
-    title: 'perfect',
-  },
-  GOOD: {
-    value: 4,
-    title: 'good',
-  },
-  NOT_BAD: {
-    value: 3,
-    title: 'not bad',
-  },
-  BADLY : {
-    value: 2,
-    title: 'badly',
-  },
-  TERRIBLY: {
-    value: 1,
-    title: 'terribly',
-  },
-};
+export const Ratings = [
+  'perfect',
+  'good',
+  'not bad',
+  'badly',
+  'terribly',
+];
 
 export const URL_MARKER_DEFAULT = 'img/pin.svg';
 export const URL_MARKER_CURRENT = 'img/pin-active.svg';
@@ -75,4 +62,9 @@ export const sortOptions = [
   SortType.HighPriceFirst,
   SortType.TopRatedFirst,
 ];
+
+export enum CommentOptions {
+  minLength = 50,
+  maxLength = 300,
+}
 
