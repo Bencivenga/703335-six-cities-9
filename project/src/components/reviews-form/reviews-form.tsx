@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import {useState, useEffect, FormEvent, ChangeEvent} from 'react';
 import RatingStar from '../rating-star/rating-star';
 import {Ratings, CommentOptions} from '../../const';

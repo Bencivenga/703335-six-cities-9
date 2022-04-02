@@ -2,7 +2,6 @@ import {Route, Routes} from 'react-router-dom';
 import {useAppSelector} from '../../hooks';
 import Spinner from '../spinner/spinner';
 import {AppRoute} from '../../const';
-// import {Reviews} from '../../types/reviews';
 import PrivateRoute from '../private-route/private-route';
 import Favorites from '../../pages/favorites/favorites';
 import Login from '../../pages/login/login';
@@ -12,11 +11,6 @@ import NotFound from '../../pages/not-found/not-found';
 import HistoryRouter from '../history-route/history-route';
 import browserHistory from '../../browser-history';
 import {isCheckedAuth} from '../../utils';
-
-
-// type AppScreenProps = {
-//   reviews: Reviews;
-// };
 
 function App(): JSX.Element {
 
