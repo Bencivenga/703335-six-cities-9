@@ -1,15 +1,8 @@
+import './spinner.css';
+
 function Spinner(): JSX.Element {
   return (
-    <div style={{
-      height:  '100vh',
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      backgroundColor: 'white',
-    }}
-    >
-      <img src="img/spinner.gif" alt="" />
-    </div>
+    <div className="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
   );
 }
 

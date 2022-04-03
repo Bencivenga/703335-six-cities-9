@@ -3,25 +3,35 @@ import HeaderAuth from '../../components/header-auth/header-auth';
 import ReviewsForm from '../../components/reviews-form/reviews-form';
 import ReviewsList from '../../components/reviews-list/reviews-list';
 import PlacesList from '../../components/places-list/places-list';
+import NotFound from '../../pages/not-found/not-found';
+import Spinner from '../../components/spinner/spinner';
 import Map from '../../components/map/map';
 import {AuthorizationStatus, MAX_OFFER_IMAGES, PlaceCardClass} from '../../const';
 import {getRatingPerc} from '../../utils';
-import {Reviews} from '../../types/reviews';
-import {Offers} from '../../types/offers';
-import {useLocation} from 'react-router-dom';
+import {useParams} from 'react-router-dom';
+import {useAppSelector} from '../../hooks';
+import {store} from '../../store';
+import {fetchReviewsAction, fetchNearOffersAction, fetchOfferAction} from '../../store/api-actions';
+import {useEffect} from 'react';
 
-type RoomProps = {
-  reviews: Reviews;
-  offers: Offers;
-}
 
-function Room({reviews, offers}: RoomProps): JSX.Element {
-  const location = useLocation();
-  const pathSplit= location.pathname.split('/');
-  const offerId = Number(pathSplit[pathSplit.length - 1]);
-  const [currentOffer] = offers.filter((offer) => offer.id === offerId);
-  const {images, isPremium, title, isFavorite, rating, type, bedrooms, maxAdults, price, goods, host, description} = currentOffer;
-  const nearOffers = offers.slice(0, 3);
+function Room(): JSX.Element | null {
+  const {id} = useParams();
+  const {authorizationStatus, nearOffers, currentOffer, isCurrentOfferLoaded} = useAppSelector((state) => state);
+
+  useEffect(() => {
+    store.dispatch(fetchOfferAction(Number(id)));
+    store.dispatch(fetchReviewsAction(Number(id)));
+    store.dispatch(fetchNearOffersAction(Number(id)));
+  }, [id]);
+
+  if (!isCurrentOfferLoaded) {
+    return <Spinner />;
+  }
+
+  if (!currentOffer) {
+    return <NotFound />;
+  }
 
   return (
     <div className="page">
@@ -33,7 +43,7 @@ function Room({reviews, offers}: RoomProps): JSX.Element {
             </div>
             <nav className="header__nav">
               <ul className="header__nav-list">
-                <HeaderAuth authorizationStatus={AuthorizationStatus.NoAuth} />
+                <HeaderAuth authorizationStatus={authorizationStatus} />
               </ul>
             </nav>
           </div>
@@ -45,7 +55,7 @@ function Room({reviews, offers}: RoomProps): JSX.Element {
           <div className="property__gallery-container container">
             <div className="property__gallery">
               {
-                images.slice(0, MAX_OFFER_IMAGES).map((image) => (
+                currentOffer.images.slice(0, MAX_OFFER_IMAGES).map((image) => (
                   <div
                     className="property__image-wrapper"
                     key={image}
@@ -62,16 +72,16 @@ function Room({reviews, offers}: RoomProps): JSX.Element {
           </div>
           <div className="property__container container">
             <div className="property__wrapper">
-              {isPremium &&
+              {currentOffer.isPremium &&
               <div className="property__mark">
                 <span>Premium</span>
               </div>}
               <div className="property__name-wrapper">
                 <h1 className="property__name">
-                  {title}
+                  {currentOffer.title}
                 </h1>
                 <button
-                  className={`property__bookmark-button${isFavorite ? ' property__bookmark-button--active' : ''} button`}
+                  className={`property__bookmark-button${currentOffer.isFavorite ? ' property__bookmark-button--active' : ''} button`}
                   type="button"
                 >
                   <svg
@@ -86,33 +96,33 @@ function Room({reviews, offers}: RoomProps): JSX.Element {
               </div>
               <div className="property__rating rating">
                 <div className="property__stars rating__stars">
-                  <span style={{ width: `${getRatingPerc(rating)}%` }}></span>
+                  <span style={{ width: `${getRatingPerc(currentOffer.rating)}%` }}></span>
                   <span className="visually-hidden">Rating</span>
                 </div>
                 <span className="property__rating-value rating__value">
-                  {rating}
+                  {currentOffer.rating}
                 </span>
               </div>
               <ul className="property__features">
                 <li className="property__feature property__feature--entire">
-                  {type}
+                  {currentOffer.type}
                 </li>
                 <li className="property__feature property__feature--bedrooms">
-                  {bedrooms} Bedrooms
+                  {currentOffer.bedrooms} Bedrooms
                 </li>
                 <li className="property__feature property__feature--adults">
-                    Max {maxAdults} adults
+                    Max {currentOffer.maxAdults} adults
                 </li>
               </ul>
               <div className="property__price">
-                <b className="property__price-value">&euro;{price}</b>
+                <b className="property__price-value">&euro;{currentOffer.price}</b>
                 <span className="property__price-text">&nbsp;night</span>
               </div>
               <div className="property__inside">
                 <h2 className="property__inside-title">What&apos;s inside</h2>
                 <ul className="property__inside-list">
                   {
-                    goods.map((good) => (
+                    currentOffer.goods.map((good) => (
                       <li className="property__inside-item" key={good}>{good}</li>))
                   }
                 </ul>
@@ -123,32 +133,32 @@ function Room({reviews, offers}: RoomProps): JSX.Element {
                   <div className="property__avatar-wrapper property__avatar-wrapper--pro user__avatar-wrapper">
                     <img
                       className="property__avatar user__avatar"
-                      src={host.avatarUrl}
+                      src={currentOffer.host.avatarUrl}
                       width="74"
                       height="74"
                       alt="Host avatar"
                     />
                   </div>
-                  <span className="property__user-name">{host.name}</span>
-                  {host.isPro &&
+                  <span className="property__user-name">{currentOffer.host.name}</span>
+                  {currentOffer.host.isPro &&
                   <span className="property__user-status">Pro</span>}
                 </div>
                 <div className="property__description">
                   <p className="property__text">
-                    {description}
+                    {currentOffer.description}
                   </p>
                 </div>
               </div>
               <section className="property__reviews reviews">
-                <ReviewsList reviews={reviews} />
-                <ReviewsForm />
+                <ReviewsList />
+                {(authorizationStatus === AuthorizationStatus.Auth) && <ReviewsForm offerId={currentOffer.id}/>}
               </section>
             </div>
           </div>
           <Map
             className="property__map map"
             offers={nearOffers}
-            selectedOffer={null}
+            selectedOffer={currentOffer}
           />
         </section>
         <div className="container">

@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {Provider} from 'react-redux';
-import {reviews} from './mocks/reviews';
 import App from './components/app/app';
 import {store} from './store';
 import {fetchOffersAction, checkAuthAction} from './store/api-actions';
@@ -38,9 +37,7 @@ ReactDOM.render(
     </div>
     <Provider store={store}>
       <ToastContainer />
-      <App
-        reviews={reviews}
-      />
+      <App />
     </Provider>
   </React.StrictMode>,
   document.getElementById('root'));
