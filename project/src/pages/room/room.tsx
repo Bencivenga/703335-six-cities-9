@@ -3,29 +3,31 @@ import HeaderAuth from '../../components/header-auth/header-auth';
 import ReviewsForm from '../../components/reviews-form/reviews-form';
 import ReviewsList from '../../components/reviews-list/reviews-list';
 import PlacesList from '../../components/places-list/places-list';
-import NotFound from '../not-found/not-found';
+import NotFound from '../../pages/not-found/not-found';
+import Spinner from '../../components/spinner/spinner';
 import Map from '../../components/map/map';
 import {AuthorizationStatus, MAX_OFFER_IMAGES, PlaceCardClass} from '../../const';
 import {getRatingPerc} from '../../utils';
-import {useLocation} from 'react-router-dom';
+import {useParams} from 'react-router-dom';
 import {useAppSelector} from '../../hooks';
 import {store} from '../../store';
-import {fetchReviewsAction, fetchNearOffersAction} from '../../store/api-actions';
+import {fetchReviewsAction, fetchNearOffersAction, fetchOfferAction} from '../../store/api-actions';
 import {useEffect} from 'react';
 
-function Room(): JSX.Element {
-  const {authorizationStatus, offers, nearOffers} = useAppSelector((state) => state);
-  const location = useLocation();
-  const pathSplit= location.pathname.split('/');
-  const offerId = Number(pathSplit[pathSplit.length - 1]);
-  const [currentOffer] = offers.filter((offer) => offer.id === offerId);
+
+function Room(): JSX.Element | null {
+  const {id} = useParams();
+  const {authorizationStatus, nearOffers, currentOffer, isCurrentOfferLoaded} = useAppSelector((state) => state);
 
   useEffect(() => {
-    if (currentOffer) {
-      store.dispatch(fetchReviewsAction(currentOffer.id));
-      store.dispatch(fetchNearOffersAction(currentOffer.id));
-    }
-  }, [currentOffer]);
+    store.dispatch(fetchOfferAction(Number(id)));
+    store.dispatch(fetchReviewsAction(Number(id)));
+    store.dispatch(fetchNearOffersAction(Number(id)));
+  }, [id]);
+
+  if (!isCurrentOfferLoaded) {
+    return <Spinner />;
+  }
 
   if (!currentOffer) {
     return <NotFound />;

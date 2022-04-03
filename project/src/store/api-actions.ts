@@ -2,8 +2,8 @@ import {createAsyncThunk} from '@reduxjs/toolkit';
 import {store} from '../store';
 import {api} from './index';
 import {APIRoutes, AuthorizationStatus, AppRoute} from '../const';
-import {loadOffersAction, requireAuthorizationAction, redirectToRoute, loadReviewsAction, loadNearOffersAction} from './actions';
-import {Offers} from '../types/offers';
+import {loadOffersAction, loadOfferAction, requireAuthorizationAction, redirectAction, loadReviewsAction, loadNearOffersAction} from './actions';
+import {Offers, Offer} from '../types/offers';
 import {Reviews} from '../types/reviews';
 import {AuthData} from '../types/auth-data';
 import {UserData} from '../types/user-data';
@@ -18,6 +18,18 @@ export const fetchOffersAction = createAsyncThunk(
       const {data} = await api.get<Offers>(APIRoutes.Offers);
       store.dispatch(loadOffersAction(data));
     } catch(error) {
+      errorHandle(error);
+    }
+  },
+);
+
+export const fetchOfferAction = createAsyncThunk(
+  'fetchOffer',
+  async(id: number) => {
+    try {
+      const {data} = await api.get<Offer>(`${APIRoutes.Offers}/${id}`);
+      store.dispatch(loadOfferAction(data));
+    } catch (error) {
       errorHandle(error);
     }
   },
@@ -79,7 +91,7 @@ export const loginAction = createAsyncThunk(
       const {data: {token}} = await api.post<UserData>(APIRoutes.Login, {email, password});
       saveToken(token);
       store.dispatch(requireAuthorizationAction(AuthorizationStatus.Auth));
-      store.dispatch(redirectToRoute(AppRoute.Main));
+      store.dispatch(redirectAction(AppRoute.Main));
     } catch(error) {
       errorHandle(error);
       store.dispatch(requireAuthorizationAction(AuthorizationStatus.NoAuth));

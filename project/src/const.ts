@@ -5,6 +5,7 @@ export enum AppRoute {
   Login = '/login',
   Favorites = '/favorites',
   Room = '/offer',
+  NotFound = '404',
 }
 
 export enum APIRoutes {
