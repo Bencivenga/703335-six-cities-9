@@ -7,9 +7,10 @@ type PlaceCardProps = {
   offer: Offer,
   onMouseOver?: (offer: Offer) => void,
   onMouseLeave?: () => void,
+  onClick?:() => void,
 };
 
-function PlaceCard({offer, onMouseOver = () => void 0, onMouseLeave = () => void 0}: PlaceCardProps) {
+function PlaceCard({offer, onMouseOver = () => void 0, onMouseLeave = () => void 0, onClick = () => 0}: PlaceCardProps) {
   const {previewImage, price, title, type, id, rating, isPremium} = offer;
 
   const handleMouseOver = () => {
@@ -20,11 +21,16 @@ function PlaceCard({offer, onMouseOver = () => void 0, onMouseLeave = () => void
     onMouseLeave();
   };
 
+  const handlePlaceCardClick = () => {
+    onClick();
+  };
+
   return (
     <article
       className="cities__place-card place-card"
       onMouseOver={handleMouseOver}
       onMouseLeave={handleMouseLeave}
+      onClick={handlePlaceCardClick}
     >
       {isPremium && <div className="place-card__mark"><span>Premium</span></div>}
       <div className="cities__image-wrapper place-card__image-wrapper">

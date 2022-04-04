@@ -40,7 +40,6 @@ function ReviewsForm({offerId}: ReviewsFormProps): JSX.Element {
       <div className="reviews__rating-form form__rating">
         {Ratings.map((value, index) => {
           const keyValue = `${index}-${value}`;
-
           return (
             <RatingStar
               key={keyValue}
@@ -50,7 +49,7 @@ function ReviewsForm({offerId}: ReviewsFormProps): JSX.Element {
               onChangeHandler={onRatingChangeHandler}
             />
           );
-        })}
+        }).reverse()}
       </div>
       <textarea
         className="reviews__textarea form__textarea"

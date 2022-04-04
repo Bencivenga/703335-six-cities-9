@@ -28,14 +28,22 @@ export enum HTTP_CODE {
   NOT_FOUND = 404,
 }
 
+export enum NameSpace {
+  user = 'USER',
+  offers = 'OFFERS',
+  near_offers = 'NEAR_OFFERS',
+  reviews = 'REVIEWS',
+  sorting = 'SORTING',
+}
+
 export const MAX_OFFER_IMAGES= 6;
 
 export const Ratings = [
-  'perfect',
-  'good',
-  'not bad',
-  'badly',
   'terribly',
+  'badly',
+  'not bad',
+  'good',
+  'perfect',
 ];
 
 export const URL_MARKER_DEFAULT = 'img/pin.svg';

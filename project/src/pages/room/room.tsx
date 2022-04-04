@@ -1,5 +1,4 @@
-import Logo from '../../components/logo/logo';
-import HeaderAuth from '../../components/header-auth/header-auth';
+import Header from '../../components/header/header';
 import ReviewsForm from '../../components/reviews-form/reviews-form';
 import ReviewsList from '../../components/reviews-list/reviews-list';
 import PlacesList from '../../components/places-list/places-list';
@@ -14,10 +13,19 @@ import {store} from '../../store';
 import {fetchReviewsAction, fetchNearOffersAction, fetchOfferAction} from '../../store/api-actions';
 import {useEffect} from 'react';
 
+const onOfferClick = () => {
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth',
+  });
+};
+
 
 function Room(): JSX.Element | null {
   const {id} = useParams();
-  const {authorizationStatus, nearOffers, currentOffer, isCurrentOfferLoaded} = useAppSelector((state) => state);
+  const {authorizationStatus} = useAppSelector(({USER}) => USER);
+  const {currentOffer, isCurrentOfferLoaded} = useAppSelector(({OFFERS}) => OFFERS);
+  const {nearOffers} = useAppSelector(({NEAR_OFFERS}) => NEAR_OFFERS);
 
   useEffect(() => {
     store.dispatch(fetchOfferAction(Number(id)));
@@ -35,21 +43,7 @@ function Room(): JSX.Element | null {
 
   return (
     <div className="page">
-      <header className="header">
-        <div className="container">
-          <div className="header__wrapper">
-            <div className="header__left">
-              <Logo />
-            </div>
-            <nav className="header__nav">
-              <ul className="header__nav-list">
-                <HeaderAuth authorizationStatus={authorizationStatus} />
-              </ul>
-            </nav>
-          </div>
-        </div>
-      </header>
-
+      <Header />
       <main className="page__main page__main--property">
         <section className="property">
           <div className="property__gallery-container container">
@@ -169,6 +163,7 @@ function Room(): JSX.Element | null {
             <PlacesList
               offers={nearOffers}
               placeCardType={PlaceCardClass.NearPlaceCard}
+              onPlaceCardClick={onOfferClick}
             />
           </section>
         </div>

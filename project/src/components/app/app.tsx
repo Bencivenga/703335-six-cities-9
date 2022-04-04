@@ -14,7 +14,8 @@ import {isCheckedAuth} from '../../utils';
 
 function App(): JSX.Element {
 
-  const {isDataLoaded, offers, authorizationStatus} = useAppSelector((state) => state);
+  const {authorizationStatus} = useAppSelector(({USER}) => USER);
+  const {isDataLoaded, offers} = useAppSelector(({OFFERS}) => OFFERS);
 
   if (isCheckedAuth(authorizationStatus) || !isDataLoaded) {
     return <Spinner />;

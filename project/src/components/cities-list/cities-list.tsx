@@ -1,5 +1,5 @@
 import {useAppDispatch, useAppSelector} from '../../hooks';
-import {changeCityAction} from '../../store/actions';
+import {changeCityAction} from '../../store/offer-process/offer-process';
 import {MouseEvent} from 'react';
 import {Link} from 'react-router-dom';
 import {citiesList} from '../../const';
@@ -9,7 +9,7 @@ type CityProps = {
 };
 
 function CitiesList({cities}: CityProps) {
-  const selectedCity = useAppSelector((state) => state.activeCity);
+  const selectedCity = useAppSelector(({OFFERS}) => OFFERS.activeCity);
   const dispatch = useAppDispatch();
 
   return (

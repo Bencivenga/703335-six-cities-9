@@ -2,7 +2,7 @@ import ReviewsItem from '../reviews-item/reviews-item';
 import {useAppSelector} from '../../hooks';
 
 function ReviewsList(): JSX.Element {
-  const {reviews} = useAppSelector((state) => state);
+  const {reviews} = useAppSelector(({REVIEWS}) => REVIEWS);
 
   return (
     <>
