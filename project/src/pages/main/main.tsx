@@ -1,74 +1,23 @@
-import Logo from '../../components/logo/logo';
-import HeaderAuth from '../../components/header-auth/header-auth';
-import PlacesList from '../../components/places-list/places-list';
-import CitiesList from '../../components/cities/cities-list';
-import Sorting from '../../components/sorting/sorting';
-import Map from '../../components/map/map';
-import {citiesList, PlaceCardClass} from '../../const';
+import Header from '../../components/header/header';
+import CitiesList from '../../components/cities-list/cities-list';
+import Cities from '../../components/cities/cities';
+import CitiesEmpty from '../../components/cities-empty/cities-empty';
+import {citiesList} from '../../const';
 import {useAppSelector} from '../../hooks';
-import {Offer} from '../../types/offers';
-import {useState} from 'react';
+
 
 function Main(): JSX.Element {
-  const {activeCity, cityOffers, authorizationStatus} = useAppSelector((state) => state);
-  const [selectedOffer, setSelectedOffer] = useState<Offer | null>(null);
-
+  const {cityOffers} = useAppSelector((state) => state);
 
   return (
     <div className="page page--gray page--main">
-      <header className="header">
-        <div className="container">
-          <div className="header__wrapper">
-            <div className="header__left">
-              <Logo />
-            </div>
-            <nav className="header__nav">
-              <ul className="header__nav-list">
-                <HeaderAuth authorizationStatus={authorizationStatus} />
-              </ul>
-            </nav>
-          </div>
-        </div>
-      </header>
-
+      <Header />
       <main className={`page__main page__main--index ${!cityOffers.length && 'page__main--index-empty'}`}>
         <h1 className="visually-hidden">Cities</h1>
         <div className="tabs">
           <CitiesList cities={citiesList} />
         </div>
-        <div className="cities">
-          <div
-            className={`cities__places-container container ${!cityOffers.length && 'cities__places-container--empty'}`}
-          >
-            {cityOffers.length !== 0 &&
-            <section className="cities__places places">
-              <h2 className="visually-hidden">Places</h2>
-              <b className="places__found">{cityOffers.length} places to stay in {activeCity}</b>
-              <Sorting />
-              <PlacesList
-                offers={cityOffers}
-                placeCardType={PlaceCardClass.MainPlaceCard}
-                onPlaceCardHover={setSelectedOffer}
-                onPlaceCardLeave={() => setSelectedOffer(null)}
-              />
-            </section>}
-            {!cityOffers.length &&
-              <section className="cities__no-places">
-                <div className="cities__status-wrapper tabs__content">
-                  <b className="cities__status">No places to stay available</b>
-                  <p className="cities__status-description">We could not find any property available at the moment in {activeCity}</p>
-                </div>
-              </section>}
-            <div className="cities__right-section">
-              {cityOffers.length &&
-              <Map
-                offers={cityOffers}
-                selectedOffer={selectedOffer}
-                className="cities__map map"
-              />}
-            </div>
-          </div>
-        </div>
+        {cityOffers.length > 0 ? <Cities /> : <CitiesEmpty />}
       </main>
     </div>
   );
