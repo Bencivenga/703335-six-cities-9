@@ -23,7 +23,9 @@ const onOfferClick = () => {
 
 function Room(): JSX.Element | null {
   const {id} = useParams();
-  const {authorizationStatus, nearOffers, currentOffer, isCurrentOfferLoaded} = useAppSelector((state) => state);
+  const {authorizationStatus} = useAppSelector(({USER}) => USER);
+  const {currentOffer, isCurrentOfferLoaded} = useAppSelector(({OFFERS}) => OFFERS);
+  const {nearOffers} = useAppSelector(({NEAR_OFFERS}) => NEAR_OFFERS);
 
   useEffect(() => {
     store.dispatch(fetchOfferAction(Number(id)));

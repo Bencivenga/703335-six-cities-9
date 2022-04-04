@@ -6,7 +6,7 @@ import {AppRoute} from '../../const';
 
 
 function Header(): JSX.Element {
-  const {authorizationStatus} = useAppSelector((state) => state);
+  const {authorizationStatus} = useAppSelector(({USER}) => USER);
   const location = useLocation();
 
   return (

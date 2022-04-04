@@ -7,7 +7,7 @@ import {PlaceCardClass} from '../../const';
 import {useState} from 'react';
 
 function Cities(): JSX.Element {
-  const {cityOffers, activeCity} = useAppSelector((state) => state);
+  const {activeCity, cityOffers} = useAppSelector(({OFFERS}) => OFFERS);
   const [selectedOffer, setSelectedOffer] = useState<Offer | null>(null);
 
   return (

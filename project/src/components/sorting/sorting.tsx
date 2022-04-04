@@ -1,13 +1,15 @@
 import {useState} from 'react';
 import {sortOptions, SortType} from '../../const';
 import {useAppSelector, useAppDispatch} from '../../hooks';
-import {changeSortOptionAction, getCityOffersAction} from '../../store/actions';
+import {changeSortOptionAction} from '../../store/change-sort-option-process/change-sort-option-process';
+import {getCityOffersAction} from '../../store/offer-process/offer-process';
 import {sortOffers} from '../../utils';
 import {useCallback, memo} from 'react';
 
 
 function Sorting() {
-  const {sortType, offers} = useAppSelector((state) => state);
+  const {sortType} = useAppSelector(({SORTING}) => SORTING);
+  const {offers} = useAppSelector(({OFFERS}) => OFFERS);
   const [isOpen, setIsOpen] = useState(false);
   const dispatch = useAppDispatch();
 
