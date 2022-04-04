@@ -3,6 +3,7 @@ import {sortOptions, SortType} from '../../const';
 import {useAppSelector, useAppDispatch} from '../../hooks';
 import {changeSortOptionAction, getCityOffersAction} from '../../store/actions';
 import {sortOffers} from '../../utils';
+import {useCallback, memo} from 'react';
 
 
 function Sorting() {
@@ -10,11 +11,13 @@ function Sorting() {
   const [isOpen, setIsOpen] = useState(false);
   const dispatch = useAppDispatch();
 
-  const handleOptionClick = (option: SortType) => {
-    setIsOpen(!isOpen);
-    dispatch(changeSortOptionAction(option));
-    dispatch(getCityOffersAction(sortOffers(option, offers)));
-  };
+  const handleOptionClick = useCallback(
+    (option: SortType) => {
+      setIsOpen(!isOpen);
+      dispatch(changeSortOptionAction(option));
+      dispatch(getCityOffersAction(sortOffers(option, offers)));
+    }, [dispatch, isOpen, offers],
+  );
 
   return(
     <form className="places__sorting" action="#" method="get">
@@ -49,4 +52,4 @@ function Sorting() {
   );
 }
 
-export default Sorting;
+export default memo(Sorting);

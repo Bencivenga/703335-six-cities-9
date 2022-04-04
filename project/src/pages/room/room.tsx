@@ -13,6 +13,13 @@ import {store} from '../../store';
 import {fetchReviewsAction, fetchNearOffersAction, fetchOfferAction} from '../../store/api-actions';
 import {useEffect} from 'react';
 
+const onOfferClick = () => {
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth',
+  });
+};
+
 
 function Room(): JSX.Element | null {
   const {id} = useParams();
@@ -154,6 +161,7 @@ function Room(): JSX.Element | null {
             <PlacesList
               offers={nearOffers}
               placeCardType={PlaceCardClass.NearPlaceCard}
+              onPlaceCardClick={onOfferClick}
             />
           </section>
         </div>
