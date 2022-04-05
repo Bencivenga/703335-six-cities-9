@@ -1,7 +1,5 @@
 import PlaceCard from '../place-card/place-card';
 import {Offers, Offer} from '../../types/offers';
-import {memo} from 'react';
-
 
 type PlacesListProps = {
   offers: Offers,
@@ -28,4 +26,4 @@ function PlacesList({offers, placeCardType, onPlaceCardHover, onPlaceCardLeave, 
   );
 }
 
-export default memo(PlacesList, (prev, next) => prev.offers === next.offers);
+export default PlacesList;

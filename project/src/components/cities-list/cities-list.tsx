@@ -4,11 +4,7 @@ import {MouseEvent} from 'react';
 import {Link} from 'react-router-dom';
 import {citiesList} from '../../const';
 
-type CityProps = {
-  cities: typeof citiesList;
-};
-
-function CitiesList({cities}: CityProps) {
+function CitiesList() {
   const selectedCity = useAppSelector(({OFFERS}) => OFFERS.activeCity);
   const dispatch = useAppDispatch();
 
@@ -16,7 +12,7 @@ function CitiesList({cities}: CityProps) {
     <section className="locations container">
       <ul className="locations__list tabs__list">
         {
-          cities.map((city) => (
+          citiesList.map((city) => (
             <li
               className="locations__item"
               key={city}

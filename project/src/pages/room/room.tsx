@@ -4,8 +4,9 @@ import ReviewsList from '../../components/reviews-list/reviews-list';
 import PlacesList from '../../components/places-list/places-list';
 import NotFound from '../../pages/not-found/not-found';
 import Spinner from '../../components/spinner/spinner';
+import AddToFavoritesBtn from '../../components/add-to-favorites-btn/add-to-favorites-btn';
 import Map from '../../components/map/map';
-import {AuthorizationStatus, MAX_OFFER_IMAGES, PlaceCardClass} from '../../const';
+import {AuthorizationStatus, MAX_OFFER_IMAGES, PlaceCardClass, addToFavoriteBtnOptions} from '../../const';
 import {getRatingPerc} from '../../utils';
 import {useParams} from 'react-router-dom';
 import {useAppSelector} from '../../hooks';
@@ -74,19 +75,7 @@ function Room(): JSX.Element | null {
                 <h1 className="property__name">
                   {currentOffer.title}
                 </h1>
-                <button
-                  className={`property__bookmark-button${currentOffer.isFavorite ? ' property__bookmark-button--active' : ''} button`}
-                  type="button"
-                >
-                  <svg
-                    className="property__bookmark-icon"
-                    width="31"
-                    height="33"
-                  >
-                    <use xlinkHref="#icon-bookmark"></use>
-                  </svg>
-                  <span className="visually-hidden">To bookmarks</span>
-                </button>
+                <AddToFavoritesBtn offer={currentOffer} options={addToFavoriteBtnOptions.ROOM_OPTIONS} />
               </div>
               <div className="property__rating rating">
                 <div className="property__stars rating__stars">

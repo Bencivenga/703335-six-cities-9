@@ -1,6 +1,8 @@
 import {Offer} from '../../types/offers';
 import {AppRoute} from '../../const';
 import {Link} from 'react-router-dom';
+import {addToFavoriteBtnOptions} from '../../const';
+import AddToFavoritesBtn from '../add-to-favorites-btn/add-to-favorites-btn';
 
 type FavoriteCardProps = {
   offer: Offer;
@@ -31,21 +33,7 @@ function FavoriteCard({offer}: FavoriteCardProps): JSX.Element {
                               &#47;&nbsp;night
             </span>
           </div>
-          <button
-            className="place-card__bookmark-button place-card__bookmark-button--active button"
-            type="button"
-          >
-            <svg
-              className="place-card__bookmark-icon"
-              width="18"
-              height="19"
-            >
-              <use xlinkHref="#icon-bookmark"></use>
-            </svg>
-            <span className="visually-hidden">
-                              In bookmarks
-            </span>
-          </button>
+          <AddToFavoritesBtn offer={offer} options={addToFavoriteBtnOptions.PLACE_CARD_OPTIONS}/>
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">

@@ -13,7 +13,12 @@ export const nearOffersData = createSlice({
     loadNearOffersAction: (state, action) => {
       state.nearOffers = action.payload;
     },
+    changeNearOffersAction: (state, action) => {
+      const nearOffer = action.payload;
+      const index = state.nearOffers.findIndex((offer) => offer.id === nearOffer.id);
+      state.nearOffers.splice(index, 1, nearOffer);
+    },
   },
 });
 
-export const {loadNearOffersAction} = nearOffersData.actions;
+export const {loadNearOffersAction, changeNearOffersAction} = nearOffersData.actions;

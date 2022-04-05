@@ -1,19 +1,33 @@
 import Header from '../../components/header/header';
+import FavoritesList from '../../components/favorites-to-places/favorites-to-places';
+import FavoritesEmpty from '../../components/favorites-empty/favorites-empty';
+import Spinner from '../../components/spinner/spinner';
+import {fetchFavoriteOffersAction} from '../../store/api-actions';
 import {AppRoute} from '../../const';
-import {Offers} from '../../types/offers';
-import FavoritesList from '../../components/favorites-list/favorites-list';
+import {useAppDispatch, useAppSelector} from '../../hooks';
 import {Link} from 'react-router-dom';
+import {useEffect} from 'react';
 
-type FavoriteProps = {
-  offers: Offers;
-}
+function FavoritesPage(): JSX.Element {
+  const {favoriteOffers, areFavoriteOffersLoaded} = useAppSelector(({FAVORITE_OFFERS}) => FAVORITE_OFFERS);
+  const dispatch = useAppDispatch();
 
+  useEffect(() => {
+    dispatch(fetchFavoriteOffersAction());
+  }, [dispatch]);
 
-function Favorites({offers}: FavoriteProps): JSX.Element {
+  if (!areFavoriteOffersLoaded) {
+    return <Spinner />;
+  }
+
   return (
     <div className="page">
-      <Header />
-      <FavoritesList offers={offers}/>
+      <Header/>
+      <main className="page__main page__main--favorites">
+        <div className="page__favorites-container container">
+          {favoriteOffers.length > 0 ? <FavoritesList/> : <FavoritesEmpty/>}
+        </div>
+      </main>
       <footer className="footer container">
         <Link className="footer__logo-link" to={AppRoute.Main}>
           <img
@@ -29,4 +43,4 @@ function Favorites({offers}: FavoriteProps): JSX.Element {
   );
 }
 
-export default Favorites;
+export default FavoritesPage;

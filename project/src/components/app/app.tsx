@@ -15,7 +15,7 @@ import {isCheckedAuth} from '../../utils';
 function App(): JSX.Element {
 
   const {authorizationStatus} = useAppSelector(({USER}) => USER);
-  const {isDataLoaded, offers} = useAppSelector(({OFFERS}) => OFFERS);
+  const {isDataLoaded} = useAppSelector(({OFFERS}) => OFFERS);
 
   if (isCheckedAuth(authorizationStatus) || !isDataLoaded) {
     return <Spinner />;
@@ -36,7 +36,7 @@ function App(): JSX.Element {
           path={AppRoute.Favorites}
           element={
             <PrivateRoute authorizationStatus={authorizationStatus}>
-              <Favorites offers={offers} />
+              <Favorites />
             </PrivateRoute>
           }
         />
