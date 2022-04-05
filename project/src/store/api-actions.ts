@@ -4,14 +4,17 @@ import {api} from './index';
 import {APIRoutes, AuthorizationStatus, AppRoute} from '../const';
 import {redirectAction} from './actions';
 import {requireAuthorizationAction} from './user-process/user-process';
-import {loadOffersAction, loadOfferAction} from './offer-process/offer-process';
+import {loadOffersAction, loadOfferAction, changeOfferAction} from './offer-process/offer-process';
 import {loadReviewsAction} from './reviews-data/reviews-data';
-import {loadNearOffersAction} from './near-offers-data/near-offers-data';
+import {loadNearOffersAction} from './near-offers-process/near-offers-process';
+import {loadFavoriteOffersAction, changeFavoriteOffersAction} from './favorite-offers-process/favorite-offers-process';
+import {changeNearOffersAction} from './near-offers-process/near-offers-process';
 import {Offers, Offer} from '../types/offers';
 import {Reviews} from '../types/reviews';
 import {AuthData} from '../types/auth-data';
 import {UserData} from '../types/user-data';
 import {CommentData} from '../types/comment-data';
+import {FavoriteOffersData} from '../types/favorite-offers-data';
 import {saveToken, dropToken} from '../services/token';
 import {errorHandle} from '../services/error-handle';
 
@@ -29,9 +32,36 @@ export const fetchOffersAction = createAsyncThunk(
 
 export const fetchOfferAction = createAsyncThunk(
   'fetchOffer',
-  async(id: number) => {
+  async(hotelId: number) => {
     try {
-      const {data} = await api.get<Offer>(`${APIRoutes.Offers}/${id}`);
+      const {data} = await api.get<Offer>(`${APIRoutes.Offers}/${hotelId}`);
+      store.dispatch(loadOfferAction(data));
+    } catch (error) {
+      errorHandle(error);
+    }
+  },
+);
+
+export const fetchFavoriteOffersAction = createAsyncThunk(
+  'fetchFavoriteOffers',
+  async() => {
+    try {
+      const {data} = await api.get<Offers>(`${APIRoutes.FavoriteOffers}`);
+      store.dispatch(loadFavoriteOffersAction(data));
+    } catch (error) {
+      errorHandle(error);
+    }
+  },
+);
+
+export const changeFavoriteOfferAction = createAsyncThunk(
+  'changeFavoriteOffer',
+  async({hotelId, status}: FavoriteOffersData) => {
+    try {
+      const {data} = await api.post<Offer>(`${APIRoutes.FavoriteOffers}/${hotelId}/${status}`);
+      store.dispatch(changeOfferAction(data));
+      store.dispatch(changeNearOffersAction(data));
+      store.dispatch(changeFavoriteOffersAction(data));
       store.dispatch(loadOfferAction(data));
     } catch (error) {
       errorHandle(error);

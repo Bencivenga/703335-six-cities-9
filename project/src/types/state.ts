@@ -28,7 +28,12 @@ export type NearOffersData = {
 
 export type ChangeSortOptionProcess = {
   sortType: SortType;
-}
+};
+
+export type FavoriteOffersProcess = {
+  favoriteOffers: Offers;
+  areFavoriteOffersLoaded: boolean;
+};
 
 export type State = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;

@@ -14,6 +14,7 @@ export enum APIRoutes {
   Logout = '/logout',
   Comments = '/comments',
   nearOffers = '/nearby',
+  FavoriteOffers = '/favorite',
 }
 
 export enum AuthorizationStatus {
@@ -34,6 +35,7 @@ export enum NameSpace {
   near_offers = 'NEAR_OFFERS',
   reviews = 'REVIEWS',
   sorting = 'SORTING',
+  favorite_offers = 'FAVORITE_OFFERS',
 }
 
 export const MAX_OFFER_IMAGES= 6;
@@ -56,6 +58,23 @@ export const HALF_WIDTH_MARKER = 0.5 * MARKER_WIDTH;
 export const PlaceCardClass = {
   MainPlaceCard: 'cities__places-list tabs__content',
   NearPlaceCard: 'near-places__list',
+};
+
+export const addToFavoriteBtnOptions = {
+  PLACE_CARD_OPTIONS: {
+    btnClass: 'place-card',
+    btnSize: {
+      width: '18',
+      height: '19',
+    },
+  },
+  ROOM_OPTIONS: {
+    btnClass: 'property',
+    btnSize: {
+      width: '31',
+      height: '33',
+    },
+  },
 };
 
 export enum SortType {

@@ -34,8 +34,16 @@ export const offerProcess = createSlice({
       state.activeCity = action.payload;
       state.cityOffers = state.offers.filter((offer) => offer.city.name === state.activeCity);
     },
+    changeOfferAction: (state, action) => {
+      const newOffer = action.payload;
+      const offerIndex = state.offers.findIndex((offer) => offer.id === newOffer.id);
+      state.offers.splice(offerIndex, 1, newOffer);
+
+      const cityOfferIndex = state.cityOffers.findIndex((offer) => offer.id === newOffer.id);
+      state.cityOffers.splice(cityOfferIndex, 1, newOffer);
+    },
   },
 });
 
-export const {loadOffersAction, loadOfferAction, getCityOffersAction, changeCityAction} = offerProcess.actions;
+export const {loadOffersAction, loadOfferAction, getCityOffersAction, changeCityAction, changeOfferAction} = offerProcess.actions;
 
