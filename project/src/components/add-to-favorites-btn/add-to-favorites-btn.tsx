@@ -1,9 +1,10 @@
 import {useAppSelector, useAppDispatch} from '../../hooks';
-import {changeFavoriteOfferAction} from '../../store/api-actions';
+import {sendFavoriteOfferChangeAction} from '../../store/api-actions';
 import {AppRoute, AuthorizationStatus} from '../../const';
 import {useNavigate} from 'react-router-dom';
 import {Offer} from '../../types/offers';
-import{AddToFavoritesBtnOptions} from '../../types/add-to-favorite-btn';
+import {AddToFavoritesBtnOptions} from '../../types/add-to-favorite-btn';
+import {getAuthorizationStatus} from '../../store/user-process/selectors';
 
 type AddToFavoritesBtnProps = {
   offer: Offer;
@@ -12,7 +13,7 @@ type AddToFavoritesBtnProps = {
 
 function AddToFavoritesBtn({offer, options}: AddToFavoritesBtnProps): JSX.Element {
   const dispatch = useAppDispatch();
-  const {authorizationStatus} = useAppSelector(({USER}) => USER);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
   const navigate = useNavigate();
 
   const handleAddToFavoritesBtnClick = () => {
@@ -20,7 +21,7 @@ function AddToFavoritesBtn({offer, options}: AddToFavoritesBtnProps): JSX.Elemen
       navigate(AppRoute.Login, {replace: true});
     }
 
-    dispatch(changeFavoriteOfferAction({hotelId: offer.id, status: Number(!offer.isFavorite)}));
+    dispatch(sendFavoriteOfferChangeAction({hotelId: offer.id, status: Number(!offer.isFavorite)}));
   };
 
   return (

@@ -10,11 +10,11 @@ const initialState: OfferProcess = {
   currentOffer: null,
   activeCity: FIRST_CITY,
   isDataLoaded: false,
-  isCurrentOfferLoaded: false,
+  isOfferLoaded: false,
 };
 
 export const offerProcess = createSlice({
-  name: NameSpace.offers,
+  name: NameSpace.Offers,
   initialState,
   reducers: {
     loadOffersAction: (state, action) => {
@@ -24,11 +24,10 @@ export const offerProcess = createSlice({
     },
     loadOfferAction: (state, action) => {
       state.currentOffer = action.payload;
-      state.isCurrentOfferLoaded = true;
+      state.isOfferLoaded = true;
     },
-    getCityOffersAction: (state, action) => {
-      state.offers = action.payload;
-      state.cityOffers = state.offers.filter((offer) => offer.city.name === state.activeCity);
+    changeOfferLoadedAction: (state, action) => {
+      state.isOfferLoaded = action.payload;
     },
     changeCityAction: (state, action) => {
       state.activeCity = action.payload;
@@ -45,5 +44,4 @@ export const offerProcess = createSlice({
   },
 });
 
-export const {loadOffersAction, loadOfferAction, getCityOffersAction, changeCityAction, changeOfferAction} = offerProcess.actions;
-
+export const {loadOffersAction, loadOfferAction, changeOfferLoadedAction, changeCityAction, changeOfferAction} = offerProcess.actions;

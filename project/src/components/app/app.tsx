@@ -11,11 +11,13 @@ import NotFound from '../../pages/not-found/not-found';
 import HistoryRouter from '../history-route/history-route';
 import browserHistory from '../../browser-history';
 import {isCheckedAuth} from '../../utils';
+import {getDataLoaded} from '../../store/offer-process/selectors';
+import {getAuthorizationStatus} from '../../store/user-process/selectors';
 
 function App(): JSX.Element {
 
-  const {authorizationStatus} = useAppSelector(({USER}) => USER);
-  const {isDataLoaded} = useAppSelector(({OFFERS}) => OFFERS);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
+  const isDataLoaded = useAppSelector(getDataLoaded);
 
   if (isCheckedAuth(authorizationStatus) || !isDataLoaded) {
     return <Spinner />;

@@ -1,6 +1,6 @@
 import request from 'axios';
 import {ErrorType} from '../types/error';
-import {HTTP_CODE} from '../const';
+import {HTTPCode} from '../const';
 import {toast} from 'react-toastify';
 import {store} from '../store';
 import {redirectAction} from '../store/actions';
@@ -15,13 +15,13 @@ export const errorHandle = (error: ErrorType): void => {
 
   if (response) {
     switch (response.status) {
-      case HTTP_CODE.BAD_REQUEST:
+      case HTTPCode.BadRequest:
         toast.info(response.data.error);
         break;
-      case HTTP_CODE.UNAUTHORIZED:
+      case HTTPCode.Unauthorized:
         toast.info(response.data.error);
         break;
-      case HTTP_CODE.NOT_FOUND:
+      case HTTPCode.NotFound:
         toast.info(response.data.error);
         store.dispatch(redirectAction(AppRoute.NotFound));
         break;

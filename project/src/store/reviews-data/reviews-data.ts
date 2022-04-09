@@ -4,16 +4,22 @@ import {ReviewsData} from '../../types/state';
 
 const initialState: ReviewsData = {
   reviews: [],
+  isDataLoaded: false,
 };
 
 export const reviewsData = createSlice({
-  name: NameSpace.reviews,
+  name: NameSpace.Reviews,
   initialState,
   reducers: {
     loadReviewsAction: (state, action) => {
       state.reviews = action.payload;
+      state.isDataLoaded = true;
+    },
+
+    changeDataLoaded: (state, action) => {
+      state.isDataLoaded = action.payload;
     },
   },
 });
 
-export const {loadReviewsAction} = reviewsData.actions;
+export const {loadReviewsAction, changeDataLoaded} = reviewsData.actions;

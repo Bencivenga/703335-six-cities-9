@@ -1,8 +1,9 @@
 import {Offers, Offer} from './types/offers';
+import {Review, Reviews} from './types/reviews';
 import {SortType, AuthorizationStatus} from './const';
 
 const MAX_RATING = 5;
-export const getRatingPerc = (rating: number): number => Math.round(rating) / MAX_RATING * 100;
+export const getRatingPercentage = (rating: number): number => Math.round(rating) / MAX_RATING * 100;
 
 export const sortOffers = (value: SortType, offers: Offers) => {
   const offersToSort = [...offers];
@@ -23,3 +24,8 @@ export const sortOffers = (value: SortType, offers: Offers) => {
 };
 
 export const isCheckedAuth = (authorizationStatus: AuthorizationStatus): boolean => authorizationStatus === AuthorizationStatus.Unknown;
+
+export const sortComments = (comments: Reviews) => {
+  const commentsToSort = [...comments];
+  return commentsToSort.sort((a:Review, b:Review) => (a.date > b.date ? -1 : 1));
+};

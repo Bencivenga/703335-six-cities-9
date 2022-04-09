@@ -5,9 +5,11 @@ import {useAppSelector} from '../../hooks';
 import {Offer} from '../../types/offers';
 import {PlaceCardClass} from '../../const';
 import {useState} from 'react';
+import {getCityOffers, getActiveCity} from '../../store/offer-process/selectors';
 
 function Cities(): JSX.Element {
-  const {activeCity, cityOffers} = useAppSelector(({OFFERS}) => OFFERS);
+  const activeCity = useAppSelector(getActiveCity);
+  const cityOffers = useAppSelector(getCityOffers);
   const [selectedOffer, setSelectedOffer] = useState<Offer | null>(null);
 
   return (

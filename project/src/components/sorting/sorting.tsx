@@ -2,14 +2,16 @@ import {useState} from 'react';
 import {sortOptions, SortType} from '../../const';
 import {useAppSelector, useAppDispatch} from '../../hooks';
 import {changeSortOptionAction} from '../../store/change-sort-option-process/change-sort-option-process';
-import {getCityOffersAction} from '../../store/offer-process/offer-process';
+import {loadOffersAction} from '../../store/offer-process/offer-process';
 import {sortOffers} from '../../utils';
 import {useCallback, memo} from 'react';
+import {getSortType} from '../../store/change-sort-option-process/selectors';
+import {getOffers} from '../../store/offer-process/selectors';
 
 
 function Sorting() {
-  const {sortType} = useAppSelector(({SORTING}) => SORTING);
-  const {offers} = useAppSelector(({OFFERS}) => OFFERS);
+  const sortOption = useAppSelector(getSortType);
+  const offers = useAppSelector(getOffers);
   const [isOpen, setIsOpen] = useState(false);
   const dispatch = useAppDispatch();
 
@@ -17,7 +19,7 @@ function Sorting() {
     (option: SortType) => {
       setIsOpen(!isOpen);
       dispatch(changeSortOptionAction(option));
-      dispatch(getCityOffersAction(sortOffers(option, offers)));
+      dispatch(loadOffersAction(sortOffers(option, offers)));
     }, [dispatch, isOpen, offers],
   );
 
@@ -29,7 +31,7 @@ function Sorting() {
         tabIndex={0}
         onClick={() => setIsOpen(!isOpen)}
       >
-        {sortType}
+        {sortOption}
         <svg className="places__sorting-arrow" width="7" height="4">
           <use xlinkHref="#icon-arrow-select"></use>
         </svg>
@@ -40,7 +42,7 @@ function Sorting() {
         {
           sortOptions.map((option) => (
             <li
-              className={`places__option ${option === sortType ? 'places__option--active' : ''}`}
+              className={`places__option ${option === sortOption ? 'places__option--active' : ''}`}
               tabIndex={0}
               key={option}
               onClick = {() => {handleOptionClick(option);}}
