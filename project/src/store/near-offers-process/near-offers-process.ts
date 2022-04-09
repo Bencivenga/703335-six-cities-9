@@ -7,7 +7,7 @@ const initialState: NearOffersData = {
 };
 
 export const nearOffersData = createSlice({
-  name: NameSpace.near_offers,
+  name: NameSpace.NearOffers,
   initialState,
   reducers: {
     loadNearOffersAction: (state, action) => {

@@ -1,11 +1,16 @@
 import {useAppDispatch, useAppSelector} from '../../hooks';
-import {changeCityAction} from '../../store/offer-process/offer-process';
+import {changeCityAction, loadOffersAction} from '../../store/offer-process/offer-process';
+import {changeSortOptionAction} from '../../store/change-sort-option-process/change-sort-option-process';
 import {MouseEvent} from 'react';
 import {Link} from 'react-router-dom';
-import {citiesList} from '../../const';
+import {citiesList, SortType} from '../../const';
+import {getActiveCity} from '../../store/offer-process/selectors';
+import {getOffers} from '../../store/offer-process/selectors';
+import {sortOffers} from '../../utils';
 
 function CitiesList() {
-  const selectedCity = useAppSelector(({OFFERS}) => OFFERS.activeCity);
+  const activeCity = useAppSelector(getActiveCity);
+  const offers = useAppSelector(getOffers);
   const dispatch = useAppDispatch();
 
   return (
@@ -18,11 +23,13 @@ function CitiesList() {
               key={city}
             >
               <Link
-                className={`locations__item-link tabs__item ${city === selectedCity ? 'tabs__item--active' : ''}`}
+                className={`locations__item-link tabs__item ${city === activeCity ? 'tabs__item--active' : ''}`}
                 onClick={
                   (evt: MouseEvent) => {
                     evt.preventDefault();
                     dispatch(changeCityAction(city));
+                    dispatch(changeSortOptionAction(SortType.Popular));
+                    dispatch(loadOffersAction(sortOffers(SortType.Popular, offers)));
                   }
                 }
                 to="#"

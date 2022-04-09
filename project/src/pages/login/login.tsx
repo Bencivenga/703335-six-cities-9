@@ -1,13 +1,25 @@
 import {FormEvent, useRef} from 'react';
+import {Link, useNavigate} from 'react-router-dom';
 import Logo from '../../components/logo/logo';
-import {useAppDispatch} from '../../hooks';
+import {useAppDispatch, useAppSelector} from '../../hooks';
 import {AuthData} from '../../types/auth-data';
 import {loginAction} from '../../store/api-actions';
+import {getAuthorizationStatus} from '../../store/user-process/selectors';
+import {AppRoute, AuthorizationStatus} from '../../const';
+import {useEffect} from 'react';
 
 function Login(): JSX.Element {
   const loginRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
+
+  useEffect(() => {
+    if (authorizationStatus === AuthorizationStatus.Auth) {
+      navigate(AppRoute.Main);
+    }
+  });
 
   const onSubmit = (authData: AuthData) => {
     dispatch(loginAction(authData));
@@ -65,6 +77,7 @@ function Login(): JSX.Element {
                   type="password"
                   name="password"
                   placeholder="Password"
+                  pattern="(?=.*[0-9])(?=.*[A-Za-z])[0-9a-zA-Z]{2,}"
                   required
                 />
               </div>
@@ -78,9 +91,9 @@ function Login(): JSX.Element {
           </section>
           <section className="locations locations--login locations--current">
             <div className="locations__item">
-              <a className="locations__item-link" href="#">
+              <Link className="locations__item-link" to="#todo">
                 <span>Amsterdam</span>
-              </a>
+              </Link>
             </div>
           </section>
         </div>

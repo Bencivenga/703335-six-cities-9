@@ -8,11 +8,11 @@ import {userProcess} from './user-process/user-process';
 import {favoriteOffersProcess} from './favorite-offers-process/favorite-offers-process';
 
 export const rootReducer = combineReducers({
-  [NameSpace.offers]: offerProcess.reducer,
-  [NameSpace.near_offers]: nearOffersData.reducer,
-  [NameSpace.reviews]: reviewsData.reducer,
-  [NameSpace.sorting]: changeSortOptionProcess.reducer,
-  [NameSpace.user]: userProcess.reducer,
-  [NameSpace.favorite_offers]: favoriteOffersProcess.reducer,
+  [NameSpace.Offers]: offerProcess.reducer,
+  [NameSpace.NearOffers]: nearOffersData.reducer,
+  [NameSpace.Reviews]: reviewsData.reducer,
+  [NameSpace.Sorting]: changeSortOptionProcess.reducer,
+  [NameSpace.User]: userProcess.reducer,
+  [NameSpace.FavoriteOffers]: favoriteOffersProcess.reducer,
 });
 

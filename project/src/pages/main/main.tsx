@@ -3,10 +3,11 @@ import CitiesList from '../../components/cities-list/cities-list';
 import Cities from '../../components/cities/cities';
 import CitiesEmpty from '../../components/cities-empty/cities-empty';
 import {useAppSelector} from '../../hooks';
+import {getCityOffers} from '../../store/offer-process/selectors';
 
 
 function Main(): JSX.Element {
-  const {cityOffers} = useAppSelector(({OFFERS}) => OFFERS);
+  const cityOffers = useAppSelector(getCityOffers);
 
   return (
     <div className="page page--gray page--main">

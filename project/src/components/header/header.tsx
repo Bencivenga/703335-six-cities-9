@@ -3,10 +3,11 @@ import Logo from '../logo/logo';
 import {useAppSelector} from '../../hooks';
 import {useLocation} from 'react-router-dom';
 import {AppRoute} from '../../const';
+import {getAuthorizationStatus} from '../../store/user-process/selectors';
 
 
 function Header(): JSX.Element {
-  const {authorizationStatus} = useAppSelector(({USER}) => USER);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
   const location = useLocation();
 
   return (

@@ -1,7 +1,7 @@
 import leaflet, {LayerGroup, Map as LeafletMap} from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import {useRef, useEffect} from 'react';
-import {URL_MARKER_DEFAULT, URL_MARKER_CURRENT, MARKER_WIDTH, MARKER_HEIGHT, HALF_WIDTH_MARKER} from '../../const';
+import {MarkerOption} from '../../const';
 import useMap from '../../hooks/use-map';
 import {Offer, Offers} from '../../types/offers';
 
@@ -11,16 +11,18 @@ type MapProps = {
   className: string,
 };
 
+const HALF_MARKER_WIDTH = 0.5 * MarkerOption.MarkerWidth;
+
 const customDefaultIcon = leaflet.icon({
-  iconUrl: URL_MARKER_DEFAULT,
-  iconSize: [MARKER_WIDTH, MARKER_HEIGHT],
-  iconAnchor: [HALF_WIDTH_MARKER, MARKER_HEIGHT],
+  iconUrl: MarkerOption.MarkerDefault,
+  iconSize: [MarkerOption.MarkerWidth, MarkerOption.MarkerHeight],
+  iconAnchor: [HALF_MARKER_WIDTH, MarkerOption.MarkerHeight],
 });
 
 const customActiveIcon = leaflet.icon({
-  iconUrl: URL_MARKER_CURRENT,
-  iconSize: [MARKER_WIDTH, MARKER_HEIGHT],
-  iconAnchor: [HALF_WIDTH_MARKER, MARKER_HEIGHT],
+  iconUrl: MarkerOption.MarkerCurrent,
+  iconSize: [MarkerOption.MarkerWidth, MarkerOption.MarkerHeight],
+  iconAnchor: [HALF_MARKER_WIDTH, MarkerOption.MarkerHeight],
 });
 
 function Map({offers, selectedOffer, className}: MapProps) {

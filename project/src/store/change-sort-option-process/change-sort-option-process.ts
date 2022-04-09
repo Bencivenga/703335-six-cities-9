@@ -7,7 +7,7 @@ const initialState: ChangeSortOptionProcess = {
 };
 
 export const changeSortOptionProcess = createSlice({
-  name: NameSpace.sorting,
+  name: NameSpace.Sorting,
   initialState,
   reducers: {
     changeSortOptionAction: (state, action) => {

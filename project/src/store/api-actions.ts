@@ -1,9 +1,9 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
 import {store} from '../store';
 import {api} from './index';
-import {APIRoutes, AuthorizationStatus, AppRoute} from '../const';
+import {APIRoute, AuthorizationStatus, AppRoute} from '../const';
 import {redirectAction} from './actions';
-import {requireAuthorizationAction} from './user-process/user-process';
+import {requireAuthorizationAction, getUserDataAction} from './user-process/user-process';
 import {loadOffersAction, loadOfferAction, changeOfferAction} from './offer-process/offer-process';
 import {loadReviewsAction} from './reviews-data/reviews-data';
 import {loadNearOffersAction} from './near-offers-process/near-offers-process';
@@ -22,7 +22,7 @@ export const fetchOffersAction = createAsyncThunk(
   'fetchOffers',
   async() => {
     try {
-      const {data} = await api.get<Offers>(APIRoutes.Offers);
+      const {data} = await api.get<Offers>(APIRoute.Offers);
       store.dispatch(loadOffersAction(data));
     } catch(error) {
       errorHandle(error);
@@ -34,7 +34,7 @@ export const fetchOfferAction = createAsyncThunk(
   'fetchOffer',
   async(hotelId: number) => {
     try {
-      const {data} = await api.get<Offer>(`${APIRoutes.Offers}/${hotelId}`);
+      const {data} = await api.get<Offer>(`${APIRoute.Offers}/${hotelId}`);
       store.dispatch(loadOfferAction(data));
     } catch (error) {
       errorHandle(error);
@@ -46,7 +46,7 @@ export const fetchFavoriteOffersAction = createAsyncThunk(
   'fetchFavoriteOffers',
   async() => {
     try {
-      const {data} = await api.get<Offers>(`${APIRoutes.FavoriteOffers}`);
+      const {data} = await api.get<Offers>(`${APIRoute.FavoriteOffers}`);
       store.dispatch(loadFavoriteOffersAction(data));
     } catch (error) {
       errorHandle(error);
@@ -54,11 +54,11 @@ export const fetchFavoriteOffersAction = createAsyncThunk(
   },
 );
 
-export const changeFavoriteOfferAction = createAsyncThunk(
-  'changeFavoriteOffer',
+export const sendFavoriteOfferChangeAction = createAsyncThunk(
+  'sendFavoriteOfferChange',
   async({hotelId, status}: FavoriteOffersData) => {
     try {
-      const {data} = await api.post<Offer>(`${APIRoutes.FavoriteOffers}/${hotelId}/${status}`);
+      const {data} = await api.post<Offer>(`${APIRoute.FavoriteOffers}/${hotelId}/${status}`);
       store.dispatch(changeOfferAction(data));
       store.dispatch(changeNearOffersAction(data));
       store.dispatch(changeFavoriteOffersAction(data));
@@ -73,7 +73,7 @@ export const fetchReviewsAction = createAsyncThunk(
   'fetchReviews',
   async(hotelId: number) => {
     try {
-      const {data} = await api.get<Reviews>(`${APIRoutes.Comments}/${hotelId}`);
+      const {data} = await api.get<Reviews>(`${APIRoute.Comments}/${hotelId}`);
       store.dispatch(loadReviewsAction(data));
     } catch(error) {
       errorHandle(error);
@@ -85,7 +85,7 @@ export const sendReviewAction = createAsyncThunk(
   'sendReview',
   async({hotelId, comment}: CommentData) => {
     try {
-      const {data} = await api.post<Reviews>(`${APIRoutes.Comments}/${hotelId}`, comment);
+      const {data} = await api.post<Reviews>(`${APIRoute.Comments}/${hotelId}`, comment);
       store.dispatch(loadReviewsAction(data));
     } catch(error) {
       errorHandle(error);
@@ -97,7 +97,7 @@ export const fetchNearOffersAction = createAsyncThunk(
   'fetchNearOffers',
   async(hotelId: number) => {
     try {
-      const {data} = await api.get<Offers>(`${APIRoutes.Offers}/${hotelId}${APIRoutes.nearOffers}`);
+      const {data} = await api.get<Offers>(`${APIRoute.Offers}/${hotelId}${APIRoute.nearOffers}`);
       store.dispatch(loadNearOffersAction(data));
     } catch(error) {
       errorHandle(error);
@@ -105,12 +105,21 @@ export const fetchNearOffersAction = createAsyncThunk(
   },
 );
 
+export const fetchUserData = createAsyncThunk(
+  'user/getUserData',
+  async () => {
+    const {data: {avatarUrl, id, isPro, name}} = await api.get(APIRoute.Login);
+    store.dispatch(getUserDataAction({avatarUrl, id, name, isPro}));
+  },
+);
+
 export const checkAuthAction = createAsyncThunk(
   'checkAuth',
   async() => {
     try {
-      await api.get(APIRoutes.Login);
+      await api.get(APIRoute.Login);
       store.dispatch(requireAuthorizationAction(AuthorizationStatus.Auth));
+      store.dispatch(fetchUserData());
     } catch(error) {
       errorHandle(error);
       store.dispatch(requireAuthorizationAction(AuthorizationStatus.NoAuth));
@@ -122,9 +131,10 @@ export const loginAction = createAsyncThunk(
   'user/login',
   async({login: email, password}: AuthData) => {
     try {
-      const {data: {token}} = await api.post<UserData>(APIRoutes.Login, {email, password});
+      const {data: {token}} = await api.post<UserData>(APIRoute.Login, {email, password});
       saveToken(token);
       store.dispatch(requireAuthorizationAction(AuthorizationStatus.Auth));
+      store.dispatch(fetchUserData());
       store.dispatch(redirectAction(AppRoute.Main));
     } catch(error) {
       errorHandle(error);
@@ -137,7 +147,7 @@ export const logoutAction = createAsyncThunk(
   'user/logout',
   async() => {
     try {
-      await api.delete(APIRoutes.Logout);
+      await api.delete(APIRoute.Logout);
       dropToken();
       store.dispatch(requireAuthorizationAction(AuthorizationStatus.NoAuth));
     } catch(error) {

@@ -1,8 +1,11 @@
 import {Offer} from '../../types/offers';
 import {AppRoute} from '../../const';
 import {Link} from 'react-router-dom';
-import {addToFavoriteBtnOptions} from '../../const';
+import {AddToFavoriteBtnOption} from '../../const';
 import AddToFavoritesBtn from '../add-to-favorites-btn/add-to-favorites-btn';
+import {store} from '../../store';
+import {changeOfferLoadedAction} from '../../store/offer-process/offer-process';
+import {fetchOfferAction} from '../../store/api-actions';
 
 type FavoriteCardProps = {
   offer: Offer;
@@ -11,11 +14,16 @@ type FavoriteCardProps = {
 function FavoriteCard({offer}: FavoriteCardProps): JSX.Element {
   const {isPremium, previewImage, price, rating, title, type, id} = offer;
 
+  const handleFetchOffer = () => {
+    store.dispatch(changeOfferLoadedAction(false));
+    store.dispatch(fetchOfferAction(id));
+  };
+
   return(
     <article className="favorites__card place-card">
       {isPremium && <div className="place-card__mark"><span>Premium</span></div>}
       <div className="favorites__image-wrapper place-card__image-wrapper">
-        <Link to={`${AppRoute.Room}/${id}`}>
+        <Link to={`${AppRoute.Room}/${id}`} onClick={handleFetchOffer}>
           <img
             className="place-card__image"
             src={previewImage}
@@ -33,7 +41,7 @@ function FavoriteCard({offer}: FavoriteCardProps): JSX.Element {
                               &#47;&nbsp;night
             </span>
           </div>
-          <AddToFavoritesBtn offer={offer} options={addToFavoriteBtnOptions.PLACE_CARD_OPTIONS}/>
+          <AddToFavoritesBtn offer={offer} options={AddToFavoriteBtnOption.PLACE_CARD_OPTIONS}/>
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
@@ -42,7 +50,7 @@ function FavoriteCard({offer}: FavoriteCardProps): JSX.Element {
           </div>
         </div>
         <h2 className="place-card__name">
-          <Link to={`/offer/${id}`}>{title}</Link>
+          <Link to={`/offer/${id}`} onClick={handleFetchOffer} >{title}</Link>
         </h2>
         <p className="place-card__type">{type}</p>
       </div>

@@ -1,7 +1,8 @@
 import {useAppSelector} from '../../hooks';
+import {getActiveCity} from '../../store/offer-process/selectors';
 
 function CitiesEmpty(): JSX.Element {
-  const {activeCity} = useAppSelector(({OFFERS}) => OFFERS);
+  const activeCity = useAppSelector(getActiveCity);
 
   return (
     <div className="cities">

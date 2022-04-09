@@ -2,19 +2,21 @@ import Header from '../../components/header/header';
 import ReviewsForm from '../../components/reviews-form/reviews-form';
 import ReviewsList from '../../components/reviews-list/reviews-list';
 import PlacesList from '../../components/places-list/places-list';
-import NotFound from '../../pages/not-found/not-found';
 import Spinner from '../../components/spinner/spinner';
 import AddToFavoritesBtn from '../../components/add-to-favorites-btn/add-to-favorites-btn';
 import Map from '../../components/map/map';
-import {AuthorizationStatus, MAX_OFFER_IMAGES, PlaceCardClass, addToFavoriteBtnOptions} from '../../const';
-import {getRatingPerc} from '../../utils';
+import {AuthorizationStatus, MAX_OFFER_IMAGES, PlaceCardClass, AddToFavoriteBtnOption} from '../../const';
+import {getRatingPercentage} from '../../utils';
 import {useParams} from 'react-router-dom';
 import {useAppSelector} from '../../hooks';
 import {store} from '../../store';
 import {fetchReviewsAction, fetchNearOffersAction, fetchOfferAction} from '../../store/api-actions';
 import {useEffect} from 'react';
+import {getAuthorizationStatus} from '../../store/user-process/selectors';
+import {getOffer, getOfferLoaded} from '../../store/offer-process/selectors';
+import {getNearOffers} from '../../store/near-offers-process/selectors';
 
-const onOfferClick = () => {
+const handleOfferClick = () => {
   window.scrollTo({
     top: 0,
     behavior: 'smooth',
@@ -24,9 +26,10 @@ const onOfferClick = () => {
 
 function Room(): JSX.Element | null {
   const {id} = useParams();
-  const {authorizationStatus} = useAppSelector(({USER}) => USER);
-  const {currentOffer, isCurrentOfferLoaded} = useAppSelector(({OFFERS}) => OFFERS);
-  const {nearOffers} = useAppSelector(({NEAR_OFFERS}) => NEAR_OFFERS);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
+  const currentOffer= useAppSelector(getOffer);
+  const isOfferLoaded = useAppSelector(getOfferLoaded);
+  const nearOffers = useAppSelector(getNearOffers);
 
   useEffect(() => {
     store.dispatch(fetchOfferAction(Number(id)));
@@ -34,12 +37,8 @@ function Room(): JSX.Element | null {
     store.dispatch(fetchNearOffersAction(Number(id)));
   }, [id]);
 
-  if (!isCurrentOfferLoaded) {
+  if (!isOfferLoaded || !currentOffer || !nearOffers) {
     return <Spinner />;
-  }
-
-  if (!currentOffer) {
-    return <NotFound />;
   }
 
   return (
@@ -75,11 +74,11 @@ function Room(): JSX.Element | null {
                 <h1 className="property__name">
                   {currentOffer.title}
                 </h1>
-                <AddToFavoritesBtn offer={currentOffer} options={addToFavoriteBtnOptions.ROOM_OPTIONS} />
+                <AddToFavoritesBtn offer={currentOffer} options={AddToFavoriteBtnOption.ROOM_OPTIONS} />
               </div>
               <div className="property__rating rating">
                 <div className="property__stars rating__stars">
-                  <span style={{ width: `${getRatingPerc(currentOffer.rating)}%` }}></span>
+                  <span style={{ width: `${getRatingPercentage(currentOffer.rating)}%` }}></span>
                   <span className="visually-hidden">Rating</span>
                 </div>
                 <span className="property__rating-value rating__value">
@@ -152,7 +151,7 @@ function Room(): JSX.Element | null {
             <PlacesList
               offers={nearOffers}
               placeCardType={PlaceCardClass.NearPlaceCard}
-              onPlaceCardClick={onOfferClick}
+              onPlaceCardClick={handleOfferClick}
             />
           </section>
         </div>

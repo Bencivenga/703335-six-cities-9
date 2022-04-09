@@ -8,7 +8,7 @@ export enum AppRoute {
   NotFound = '404',
 }
 
-export enum APIRoutes {
+export enum APIRoute {
   Offers = '/hotels',
   Login = '/login',
   Logout = '/logout',
@@ -23,19 +23,28 @@ export enum AuthorizationStatus {
   Unknown = 'UNKNOWN',
 }
 
-export enum HTTP_CODE {
-  BAD_REQUEST = 400,
-  UNAUTHORIZED = 401,
-  NOT_FOUND = 404,
+export enum HTTPCode {
+  BadRequest = 400,
+  Unauthorized = 401,
+  NotFound = 404,
 }
 
 export enum NameSpace {
-  user = 'USER',
-  offers = 'OFFERS',
-  near_offers = 'NEAR_OFFERS',
-  reviews = 'REVIEWS',
-  sorting = 'SORTING',
-  favorite_offers = 'FAVORITE_OFFERS',
+  User = 'USER',
+  Offers = 'OFFERS',
+  NearOffers = 'NEAR_OFFERS',
+  Reviews = 'REVIEWS',
+  Sorting = 'SORTING',
+  FavoriteOffers = 'FAVORITE_OFFERS',
+}
+
+export enum City {
+  Paris = 'Paris',
+  Cologne = 'Cologne',
+  Brussels = 'Brussels',
+  Amsterdam = 'Amsterdam',
+  Hamburg = 'Hamburg',
+  Dusseldorf = 'Dusseldorf',
 }
 
 export const MAX_OFFER_IMAGES= 6;
@@ -48,19 +57,19 @@ export const Ratings = [
   'perfect',
 ];
 
-export const URL_MARKER_DEFAULT = 'img/pin.svg';
-export const URL_MARKER_CURRENT = 'img/pin-active.svg';
-
-export const MARKER_WIDTH = 42;
-export const MARKER_HEIGHT = 68;
-export const HALF_WIDTH_MARKER = 0.5 * MARKER_WIDTH;
+export const MarkerOption = {
+  MarkerDefault: 'img/pin.svg',
+  MarkerCurrent: 'img/pin-active.svg',
+  MarkerWidth: 42,
+  MarkerHeight: 68,
+} as const;
 
 export const PlaceCardClass = {
   MainPlaceCard: 'cities__places-list tabs__content',
   NearPlaceCard: 'near-places__list',
-};
+} as const;
 
-export const addToFavoriteBtnOptions = {
+export const AddToFavoriteBtnOption = {
   PLACE_CARD_OPTIONS: {
     btnClass: 'place-card',
     btnSize: {
@@ -75,7 +84,7 @@ export const addToFavoriteBtnOptions = {
       height: '33',
     },
   },
-};
+} as const;
 
 export enum SortType {
  Popular = 'Popular',
@@ -91,8 +100,9 @@ export const sortOptions = [
   SortType.TopRatedFirst,
 ];
 
-export enum CommentOptions {
+export enum CommentOption {
   minLength = 50,
   maxLength = 300,
+  maxCount = 10,
 }
 
